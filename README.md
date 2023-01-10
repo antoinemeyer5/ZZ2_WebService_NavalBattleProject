@@ -67,7 +67,7 @@ English
 
 ### Objects
 
-* Map 
+#### Map 
 
 Represents the game board of a player. A game is composed of 2 ``Map`` objects.
 
@@ -81,7 +81,7 @@ public class Map
 }
 ```
 
-* Ship
+#### Ship
 
 Represents a ``Ship``. It is an abstract global class and not directly instantiable. It gathers the attributes common to all ``Ship``.
 
@@ -111,7 +111,7 @@ public class Ship
 }
 ```
 
-  - Aircraft carrier (fr:porte-avions)
+* Aircraft carrier (fr:porte-avions)
 
 ```C#
 public class AircraftCarrier : Ship
@@ -126,7 +126,7 @@ public class AircraftCarrier : Ship
 }
 ```
 
-  - Trawler (fr:chalutier)
+* Trawler (fr:chalutier)
 
 ```C#
 public class Trawler : Ship
@@ -141,7 +141,7 @@ public class Trawler : Ship
 }
 ```
 
-* Player
+#### Player
 
 Represents a ``Player``. Allows to keep some information about the ``Player`` and associate it with a ``Map``, a history of games played and more.
 
@@ -153,7 +153,7 @@ public class Player
 }
 ```
 
-* Game
+#### Game
 
 Represents a ``Game``. Saves the final ``Map``s, the result and the winner as well as the duration of the ``Game``.
 
