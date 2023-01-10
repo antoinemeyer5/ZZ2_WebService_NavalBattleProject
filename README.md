@@ -19,7 +19,7 @@ Visual Studio 2019 or 2022 Community
 
 C# 
 
-### Arhitecture
+### Architecture
 
 API ResT
 
