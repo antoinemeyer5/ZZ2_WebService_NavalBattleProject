@@ -9,6 +9,6 @@ namespace NavalWar.DTO
     public class Player
     {
         string name;
-        List<int> history;
+        List<int> history; // Id of previous games plays
     }
 }

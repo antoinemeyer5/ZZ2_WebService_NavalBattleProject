@@ -11,7 +11,9 @@
 
         public Game(int idGame)
         {
-            idGame = idGame;
+            _result = -1;
+            _winnerName = string.Empty;
+            this.idGame = idGame;
             ListPlayer[0] = new Map("Joueur1");
             ListPlayer[1] = new Map("Joueur2");
             _duration= 0;
