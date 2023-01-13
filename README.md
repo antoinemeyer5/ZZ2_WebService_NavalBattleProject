@@ -74,7 +74,7 @@ Represents the game board of a player. A game is composed of 2 ``Map`` objects.
 ```C# 
 public class Map
 {
-  private List<List<int>> body;             //0:empty; -1:touched; -2:missed; [shipIdentifier]:ship
+  private List<List<int>> body;             //-1:empty; -2:touched; -3:missed; [shipIdentifier]:ship
   private string          name;
   private List<Ship>      associatedShips;  //example: [ship1; ship3; ship4]
   private Player          associatedPlayer;
@@ -92,7 +92,7 @@ public class Ship
   public  static  int     id;                         //unique
   private         string  name          { get; set; } //name by default
   private         int     size          { get; set; } //size of the Ship
-  private         int     orientation   { get; set; } //-1:vertical; 1:horizontal
+  private         int     orientation   { get; set; } //0:horizontal; 1:vertical 
   private         int     hookX         { get; set; } //boat hooking X point 
   private         int     hookY         { get; set; } //boat hooking Y point
   private         int     lifePoint     { get; set; } //init = size; dead if == 0
