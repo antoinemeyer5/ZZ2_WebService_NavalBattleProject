@@ -11,7 +11,7 @@ namespace Bataille_Navale.Controllers
     public class GamingMap : ControllerBase
     {
 
-        public static Game g = new Game();// public static List<Game> g = new List<Game>();
+        public static Game g = new Game();// public static List<Game> gameList = new List<Game>();
 
         public static int currentIdMax = 0;
 
@@ -34,10 +34,10 @@ namespace Bataille_Navale.Controllers
         // Also they are required so I switched  for '{}' instead of '<>'
         // Finally, this is the API controler. Everything we do use is about request. So we do not need (and indeed we must avoid) to do 'normal' function.
         // We need to return status (OK/Error/...) and if we have to send things we just need to return it with the response (here it is send as json)
-        [HttpGet("{GameId}/{PlayerId}")]
-        // GET api/<GamingMap>/{GameId}/{PlayerId}
-        public IActionResult GetPlayerMap(int GameId, int PlayerId) {
-            if (PlayerId > 1 || PlayerId < 0)
+        [HttpGet("{gameId}/{playerId}")]
+        // GET api/<GamingMap>/{gameId}/{playerId}
+        public IActionResult GetPlayerMap(int gameId, int playerId) {
+            if (playerId > 1 || playerId < 0)
             {
                 return StatusCode(400);
             }
@@ -46,35 +46,50 @@ namespace Bataille_Navale.Controllers
             /*
              * if(GameId not in the database) return StatusCode(400);
              * 
-             * return Ok( g.Find(elt => elt.id == GameId).ListPlayer[PlayerId].Body);
+             * return Ok( gameList.Find(elt => elt.id == GameId).ListPlayer[PlayerId].Body);
             */
-            return Ok( g.ListPlayer[PlayerId].Body);
+            return Ok( g.ListPlayer[playerId].Body);
         }
 
 
-        // PUT api/<GamingMap>/numPlayer
-        [HttpPut("PutShip/{numPlayer}")]
-        public IActionResult PutShip(int numPlayer, [FromForm] int numShip, [FromForm] int line, [FromForm] int column, [FromForm] Orientation orientation)
+        // PUT api/<GamingMap>/playerId
+        [HttpPut("/{gameId}/PutShip/{playerId}")]
+        public IActionResult PutShip(int gameId, int playerId, [FromForm] int numShip, [FromForm] int line, [FromForm] int column, [FromForm] Orientation orientation)
         {
             try
             {
-                g.ListPlayer[numPlayer].PlaceShip(numShip, line, column, orientation);
+                g.ListPlayer[playerId].PlaceShip(numShip, line, column, orientation);
                 return Ok();
             }
             catch(Exception)
             {
                 return StatusCode(400);
             }
+            /*
+            Game game = gameList.Find(elt => elt.id == GameId);                 
             
+            if(!game) return NotFound();
+
+            try{
+                game.ListPlayer[playerId].PlaceShip(numShip, line, column, orientation);
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return StatusCode(400);
+            }
+            */
+
         }
 
-        [HttpPut("Target/{numPlayer}")]
-        public IActionResult PutTarget(int numPlayer, [FromForm] int line, [FromForm] int column)
+        [HttpPut("/{gameId}/Target/{playerId}")]
+        public IActionResult PutTarget(int gameId, int playerId, [FromForm] int line, [FromForm] int column)
         {
-            Map target = numPlayer == 0 ? g.ListPlayer[1] : g.ListPlayer[0];
+            Map target = (playerId == 0) ? g.ListPlayer[1] : g.ListPlayer[0];
+
             try
             {
-                string result = g.ListPlayer[numPlayer].Target(line, column, target);
+                string result = g.ListPlayer[playerId].Target(line, column, target);
                 return Ok(result);
             }
             catch
@@ -82,12 +97,37 @@ namespace Bataille_Navale.Controllers
             {
                 return StatusCode(400);
             }
+
+            /*Game game = gameList.Find(elt => elt.id == GameId);
+            if (!game) return NotFound();
+            try
+            {
+                string result = game.ListPlayer[playerId].Target(line, column, target);
+                return Ok(result);
+            }
+            catch
+            (Exception)
+            {
+                return StatusCode(400);
+            }*/
+
         }
 
+        // Necessity to create Data base and remove function
         // DELETE api/<GamingMap>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{gameId}")]
+        public IActionResult Delete(int gameId)
         {
+            /*try
+            {
+                DataBase.remove(gameId);
+            }
+            catch (Exception)
+            {
+                // Does nothing if the game is not found => We do not need to earase something that doesn't exist
+            }*/
+
+            return Ok();
         }
     }
 }
