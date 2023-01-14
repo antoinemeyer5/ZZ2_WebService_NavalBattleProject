@@ -11,8 +11,17 @@ namespace Bataille_Navale.Controllers
     public class GamingMap : ControllerBase
     {
 
-        public static Game g = new Game();
+        public static Game g = new Game();// public static List<Game> g = new List<Game>();
 
+        public static int currentIdMax = 0;
+
+        // TODO:
+        // - Possibility to create a new game and save it into Database
+        // - Autoincremente ID with database and not with the static int
+
+
+
+        //It will have no sens when we will have different games
         [HttpGet("GetGameId")]
         // GET api/<GamingMap>/GetPlayerId
         public int GetGameID()
@@ -20,9 +29,26 @@ namespace Bataille_Navale.Controllers
             return g.idGame;
         }
 
-        [HttpGet("GetPlayerMap")]
-        public List<List<int>> GetPlayerMap(int numPlayer) {
-            return g.ListPlayer[numPlayer].Body;
+        // A Player refers to a game, so we must take his map after identifying the player by his number and the id of the game
+        // By REST norm we already know that we will take the map ("GamingMap" in URL) so we do not need to listen "GetPlayerMap"
+        // Also they are required so I switched  for '{}' instead of '<>'
+        // Finally, this is the API controler. Everything we do use is about request. So we do not need (and indeed we must avoid) to do 'normal' function.
+        // We need to return status (OK/Error/...) and if we have to send things we just need to return it with the response (here it is send as json)
+        [HttpGet("{GameId}/{PlayerId}")]
+        // GET api/<GamingMap>/{GameId}/{PlayerId}
+        public IActionResult GetPlayerMap(int GameId, int PlayerId) {
+            if (PlayerId > 1 || PlayerId < 0)
+            {
+                return StatusCode(400);
+            }
+
+            // After having 'create fonction' we will use instead:
+            /*
+             * if(GameId not in the database) return StatusCode(400);
+             * 
+             * return Ok( g.Find(elt => elt.id == GameId).ListPlayer[PlayerId].Body);
+            */
+            return Ok( g.ListPlayer[PlayerId].Body);
         }
 
 
