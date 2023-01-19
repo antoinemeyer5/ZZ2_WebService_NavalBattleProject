@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NavalWar.DTO;
+using System.Diagnostics.Eventing.Reader;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,18 +16,36 @@ namespace Bataille_Navale.Controllers
 
         public static int currentIdMax = 0;
 
-        // TODO:
-        // - Possibility to create a new game and save it into Database
-        // - Autoincremente ID with database and not with the static int
 
-
-
-        //It will have no sens when we will have different games
-        [HttpGet("GetGameId")]
-        // GET api/<GamingMap>/GetPlayerId
-        public int GetGameID()
+        [HttpGet("Games")]
+        // GET api/GamingMap/Games
+        public IActionResult GetGames()
         {
-            return g.idGame;
+            List<Game> list = FileStorage.LoadGame();
+            
+            // if null it's ok we send 'nothing'
+
+            return Ok(list);
+        }
+
+        [HttpGet("Games/{id}")]
+        // GET api/GamingMap/Games
+        public IActionResult GetGame(int id)
+        {
+            List<Game> list = FileStorage.LoadGame();
+            if(list == null)
+            {
+                return NotFound();
+            }
+
+            Game game = list.Find(elt => elt.idGame == id);
+
+            if(game == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(game);
         }
 
         // A Player refers to a game, so we must take his map after identifying the player by his number and the id of the game
