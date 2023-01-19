@@ -32,15 +32,9 @@ namespace Bataille_Navale.Controllers
         // GET api/GamingMap/Games
         public IActionResult GetGame(int id)
         {
-            List<Game> list = FileStorage.LoadGame();
-            if(list == null)
-            {
-                return NotFound();
-            }
+            Game game = FileStorage.GetGame(id);
 
-            Game game = list.Find(elt => elt.idGame == id);
-
-            if(game == null)
+            if (game == null)
             {
                 return NotFound();
             }

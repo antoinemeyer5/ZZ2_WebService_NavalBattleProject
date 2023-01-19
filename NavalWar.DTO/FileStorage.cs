@@ -46,6 +46,12 @@ namespace NavalWar.DTO
                 return list;
             }
         }
+
+        public static Game GetGame(int id)
+        {
+            List<Game> list = LoadGame();
+            return list.Find(elt => elt.idGame == id);
+        }
     }
 
 }
