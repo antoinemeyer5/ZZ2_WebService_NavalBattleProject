@@ -23,7 +23,6 @@ namespace NavalWar.DTO
 
         private HashSet<(int, int)> _listTarget = new HashSet<(int, int)>();
 
-        private string _name;
         private Player _associatedPlayer;
 
         public Map(string name, int lineMax, int columnMax)
