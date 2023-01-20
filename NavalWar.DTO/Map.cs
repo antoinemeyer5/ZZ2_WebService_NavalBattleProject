@@ -114,5 +114,20 @@ namespace NavalWar.DTO
             }
             return result;
         }
+
+        public int getPlayerId()
+        {
+            return _associatedPlayer.Id;
+        }
+
+        public bool HasPlayer()
+        {
+            return _associatedPlayer != null;
+        }
+
+        public void setPlayer(Player player)
+        {
+            _associatedPlayer = player;
+        }
     }
 }
