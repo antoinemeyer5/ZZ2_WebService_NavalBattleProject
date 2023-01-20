@@ -7,10 +7,6 @@ namespace NavalWar.DTO
     public enum Orientation { HORIZONTAL, VERTICAL };
     public class Map
     {
-
-        private static Random _rand = new Random();
-        public int Id { get; }
-
         private List<Ship> _associatedShips;  //example: [ship1; ship3; ship4]
         private int _lineMax = 10;
         private int _columnMax = 10;
