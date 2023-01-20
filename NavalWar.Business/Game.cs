@@ -8,17 +8,17 @@ namespace NavalWar.Business
         private string _winnerName;
         private float _duration;
 
-        public Map[] ListPlayer { get; } = new Map[2];
-        public int IdGame { get; }
+        public Map[] ListMap { get; } = new Map[2];
+        public int idGame { get; }
 
         public int getdata(int id) { return 1; }
         public Game(int idGame)
         {
             _result = -1;
             _winnerName = string.Empty;
-            this.IdGame = idGame;
-            ListPlayer[0] = new Map("Joueur1");
-            ListPlayer[1] = new Map("Joueur2");
+            this.idGame = idGame;
+            ListMap[0] = new Map("Joueur1");
+            ListMap[1] = new Map("Joueur2");
             _duration= 0;
         }
 
