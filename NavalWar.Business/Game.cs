@@ -10,6 +10,7 @@ namespace NavalWar.Business
 
         public Map[] ListMap { get; } = new Map[2];
         public int idGame { get; }
+        private int compteur = 0;
 
         public int getdata(int id) { return 1; }
         public Game(int idGame)
@@ -24,6 +25,20 @@ namespace NavalWar.Business
 
         public Game() : this(0)
         { }
+
+        public void SetPlayer(Player player)
+        {
+            if(compteur == 2)
+            {
+                Console.WriteLine("Maximum number of players reached\n");
+            }
+            else
+            {
+                ListMap[compteur].setPlayer(player); 
+                compteur++;
+            }
+
+        }
     }
 
 }
