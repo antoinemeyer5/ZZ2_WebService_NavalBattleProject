@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NavalWar.DTO;
-
+using NavalWar.Business;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Bataille_Navale.Controllers
@@ -8,21 +8,26 @@ namespace Bataille_Navale.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public class GamingMap : ControllerBase
+    public class GameAreaController : ControllerBase
     {
+        private readonly IGame _gameService;
 
-        public static Game g = new Game();
+        public GameAreaController(IGame gameService)
+        {
+            _gameService = gameService;
+        }
 
         [HttpGet("GetGameId")]
         // GET api/<GamingMap>/GetPlayerId
         public int GetGameID()
         {
-            return g.idGame;
+
+            return _gameService.IdGame;
         }
 
         [HttpGet("GetPlayerMap")]
         public List<List<int>> GetPlayerMap(int numPlayer) {
-            return g.ListPlayer[numPlayer].Body;
+            return _gameService.ListPlayer[numPlayer].Body;
         }
 
 
@@ -32,7 +37,7 @@ namespace Bataille_Navale.Controllers
         {
             try
             {
-                g.ListPlayer[numPlayer].PlaceShip(numShip, line, column, orientation);
+                _gameService.ListPlayer[numPlayer].PlaceShip(numShip, line, column, orientation);
                 return Ok();
             }
             catch(Exception)
@@ -45,10 +50,10 @@ namespace Bataille_Navale.Controllers
         [HttpPut("Target/{numPlayer}")]
         public IActionResult PutTarget(int numPlayer, [FromForm] int line, [FromForm] int column)
         {
-            Map target = numPlayer == 0 ? g.ListPlayer[1] : g.ListPlayer[0];
+            Map target = numPlayer == 0 ? _gameService.ListPlayer[1] : _gameService.ListPlayer[0];
             try
             {
-                string result = g.ListPlayer[numPlayer].Target(line, column, target);
+                string result = _gameService.ListPlayer[numPlayer].Target(line, column, target);
                 return Ok(result);
             }
             catch
