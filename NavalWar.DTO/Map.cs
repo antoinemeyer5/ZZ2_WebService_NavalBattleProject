@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualBasic;
-
-
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace NavalWar.DTO
 {
@@ -23,8 +24,6 @@ namespace NavalWar.DTO
 
         public Map(string name, int lineMax, int columnMax)
         {
-
-            Id = _rand.Next();
             Name = name;
 
             _associatedShips = new List<Ship>

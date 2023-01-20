@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.4.33205.214
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.33130.400
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bataille Navale", "Bataille Navale\Bataille Navale.csproj", "{EC597957-D382-4F75-98DB-8FA53F37B457}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -10,7 +10,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bataille Navale", "Bataille
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NavalWar.DTO", "NavalWar.DTO\NavalWar.DTO.csproj", "{2AFCB9AE-E64D-4363-A0CF-2FC12CF6AFDA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NavalWar.Business", "NavalWar.Business\NavalWar.Business.csproj", "{498EEB70-C7E2-407E-8326-19DE3A691F35}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NavalWar.Business", "NavalWar.Business\NavalWar.Business.csproj", "{498EEB70-C7E2-407E-8326-19DE3A691F35}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NavalWar.Tests", "NavalWar.Tests\NavalWar.Tests.csproj", "{33A12048-03D1-4365-BECB-B6D1D3D87873}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,6 +32,10 @@ Global
 		{498EEB70-C7E2-407E-8326-19DE3A691F35}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{498EEB70-C7E2-407E-8326-19DE3A691F35}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{498EEB70-C7E2-407E-8326-19DE3A691F35}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33A12048-03D1-4365-BECB-B6D1D3D87873}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33A12048-03D1-4365-BECB-B6D1D3D87873}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33A12048-03D1-4365-BECB-B6D1D3D87873}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33A12048-03D1-4365-BECB-B6D1D3D87873}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
