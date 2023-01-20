@@ -6,6 +6,6 @@ namespace NavalWar.Business
     {
         int getdata(int id);
         public int IdGame { get; }
-        public Map[] ListPlayer { get; }
+        public Map[] ListMap { get; }
     }
 }
