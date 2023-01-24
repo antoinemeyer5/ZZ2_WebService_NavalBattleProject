@@ -1,4 +1,7 @@
+using Microsoft.EntityFrameworkCore;
 using NavalWar.Business;
+using NavalWar.DAL;
+using NavalWar.DAL.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,8 +12,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddDbContext<NavalContext>(opt => opt.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=NavalWar; Trusted_Connection = True; MultipleActiveResultSets = true "));
+
 //add Your dependencies
-builder.Services.AddScoped<IGame, Game>();
+builder.Services.AddScoped<IGameService, GameService>();
+builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
+builder.Services.AddScoped<IGameRepository, GameRepository>(); 
+
 
 var app = builder.Build();
 
