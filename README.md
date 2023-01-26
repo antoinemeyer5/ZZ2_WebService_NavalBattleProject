@@ -64,6 +64,8 @@ English
 |---|---|
 | Class, Property, Method | PascalCase |
 | Variable | camelCase |
+| Variable private | _pascal |
+| Variable public | Pascal |
 
 ### Objects
 
@@ -74,10 +76,17 @@ Represents the game board of a player. A game is composed of 2 ``Map`` objects.
 ```C# 
 public class Map
 {
-  private List<List<int>> body;             //-1:empty; -2:touched; -3:missed; [shipIdentifier]:ship
-  private string          name;
-  private List<Ship>      associatedShips;  //example: [ship1; ship3; ship4]
-  private Player          associatedPlayer;
+  //attributes
+  //public
+  public  int                 Id { get; }
+  public  string              Name { get; set; }
+  //private
+  private List<List<int>>     _body;             //-1:empty; -2:touched; -3:missed; [shipIdentifier]:ship
+  private int                 _lineMax = 10;
+  private int                 _columnMax = 10;
+  private List<Ship>          _associatedShips;  //example: [ship1; ship3; ship4]
+  private Player              _associatedPlayer;
+  private HashSet<(int, int)> _listTarget = new HashSet<(int, int)>();
 }
 ```
 
@@ -89,55 +98,36 @@ Represents a ``Ship``. It is an abstract global class and not directly instantia
 public class Ship
 {
   //attributes
-  public  static  int     id;                         //unique
-  private         string  name          { get; set; } //name by default
-  private         int     size          { get; set; } //size of the Ship
-  private         int     orientation   { get; set; } //0:horizontal; 1:vertical 
-  private         int     hookX         { get; set; } //boat hooking X point 
-  private         int     hookY         { get; set; } //boat hooking Y point
-  private         int     lifePoint     { get; set; } //init = size; dead if == 0
-  
-  //constructor
-  public Ship()
-  {
-    id = id + 1;
-    name = "Default Ship";
-    size = 0;
-    orientation = 1;
-    hookX = -1;
-    hookY = -1;
-    lifePoint = size;
-  }
+  public  static  int         Id;                         //unique
+  private         string      _name          { get; set; } //name by default
+  private         int         _size          { get; set; } //size of the Ship
+  private         Orientation _orientation   { get; set; } //0:horizontal; 1:vertical 
+  private         (int, int)  _position  { get; set; }
+  private         int         _lifePoint     { get; set; } //init = size; dead if == 0
 }
 ```
 
 * Aircraft carrier (fr:porte-avions)
 
 ```C#
-public class AircraftCarrier : Ship
+public class Carrier : Ship
 {
   //constructor
-  public AircraftCarrier() : base()
-  {
-    name = "Aircraft Carrier";
-    size = 5;
-    lifePoint = size;
-  }
+  public Carrier((int, int) position, Orientation orientation)
+    : base("Carrier", position, 5, orientation)
+  { }
 }
 ```
 
-* Trawler (fr:chalutier)
+* Battleship (fr:cuirassé)
 
 ```C#
-public class Trawler : Ship
+public class Battleship : Ship
 {
   //constructor
-  public Trawler() : base()
-  {
-    name = "Trawler";
-    size = 2;
-    lifePoint = size;
-  }
+  public Battleship((int, int) position, Orientation orientation)
+    : base("Battleship", position, 4, orientation)
+  { }
 }
 ```
 
@@ -148,8 +138,8 @@ Represents a ``Player``. Allows to keep some information about the ``Player`` an
 ```C#
 public class Player
 {
-  string name;
-  List<Game> history;
+  public  string      Name { get; }
+  private List<int>   _history;      //id of `Game`
 }
 ```
 
@@ -160,10 +150,12 @@ Represents a ``Game``. Saves the final ``Map``s, the result and the winner as we
 ```C#
 public class Game
 {
-  Map mapPlayerOne;
-  Map mapPlayerTwo;
-  int result; //0:player one win; 1:player two win
-  string winnerName;
-  float duration; //in minutes
+  //public
+  public  int     IdGame { get; }
+  //private
+  private int     _result; //0:player one win; 1:player two win
+  private string  _winnerName;
+  private float   _duration; //in minutes
+  private Map[]   _mapHistory { get; } = new Map[2];
 }
 ```

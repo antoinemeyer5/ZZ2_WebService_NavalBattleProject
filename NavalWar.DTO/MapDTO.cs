@@ -5,32 +5,22 @@
 namespace NavalWar.DTO
 {
     public enum Orientation { HORIZONTAL, VERTICAL };
-    public class Map
+    public class MapDTO
     {
-
-        private static Random _rand = new Random();
-        public int Id { get; }
-
         private List<Ship> _associatedShips;  //example: [ship1; ship3; ship4]
         private int _lineMax = 10;
         private int _columnMax = 10;
 
-        public string Name { get; set; }
-
-        public List<List<int>> Body { get; }
+        public List<List<int>> Body { get; set; }
         public int ColumMax { get { return _columnMax; } }
         public int LineMax { get { return _lineMax; } }
 
         private HashSet<(int, int)> _listTarget = new HashSet<(int, int)>();
 
-        private string _name;
-        private Player _associatedPlayer;
+        public PlayerDTO AssociatedPlayer { get; set; }
 
-        public Map(string name, int lineMax, int columnMax)
+        public MapDTO(int lineMax, int columnMax)
         {
-
-            Id = _rand.Next();
-            Name = name;
 
             _associatedShips = new List<Ship>
             {
@@ -51,7 +41,7 @@ namespace NavalWar.DTO
             }
 
         }
-        public Map(string name) : this(name, 10, 10) { }
+        public MapDTO() : this(10, 10) { }
 
         public void PlaceShip(int numShip, int line, int column, Orientation orientation)
         {
@@ -88,10 +78,11 @@ namespace NavalWar.DTO
             }
         }
 
-        public string Target(int line, int column, Map target)
+        public string Target(int line, int column, MapDTO target)
         {
             if (_listTarget.Contains((line, column)) || line >= LineMax || column >= ColumMax)
             {
+                Console.WriteLine("already targeted or out of map");
                 throw new ArgumentException();
             }
             _listTarget.Add((line, column));
