@@ -15,5 +15,9 @@ namespace NavalWar.Business
 
         public bool DeleteGame(int id);
 
+        public PlayerDTO UpdatePlayer(int playerId, string name);
+        public bool DeletePlayer(int playerId);
+        public PlayerDTO CreatePlayer(string name);
+
     }
 }

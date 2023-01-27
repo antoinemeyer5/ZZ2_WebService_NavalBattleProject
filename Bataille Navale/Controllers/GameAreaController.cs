@@ -5,30 +5,29 @@ using NavalWar.DAL.Repositories;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Bataille_Navale.Controllers
-{ 
+{
 
     [Route("api/[controller]")]
     [ApiController]
     public class GameAreaController : ControllerBase
     {
         private readonly IGameService _gameService;
-        private readonly IPlayerRepository _playerRepository; //Maybe should we moove it into GameService
 
-        public GameAreaController(IGameService gameService, IPlayerRepository playerRepository, IGameRepository gameRepository)
+        public GameAreaController(IGameService gameService)
         {
-            
-            _playerRepository = playerRepository;
+
             _gameService = gameService;
 
-            PlayerDTO p = _playerRepository.CreatePlayer("coucou");
-            PlayerDTO p1 = _playerRepository.CreatePlayer("c'est moi tchoupi");
-         
-            _gameService.HostGame(p);
-            _gameService.JoinGame(p1);  
+            PlayerDTO p = _gameService.CreatePlayer("coucou");
+            PlayerDTO p1 = _gameService.CreatePlayer("c'est moi tchoupi");
 
-            for(int i = 0; i < gameService.GetMap(0).Count; i++)
+            _gameService.HostGame(p);
+            _gameService.JoinGame(p1);
+
+
+            for (int i = 0; i < gameService.GetMap(0).Count; i++)
             {
-                for(int j = 0; j < gameService.GetMap(0)[i].Count; j++)
+                for (int j = 0; j < gameService.GetMap(0)[i].Count; j++)
                 {
                     Console.Write(gameService.GetMap(0)[i][j] + "|");
                 }
@@ -54,7 +53,8 @@ namespace Bataille_Navale.Controllers
 
         [HttpGet("GetPlayerMap/{numPlayer}")]
         // GET api/GameArea/GetPlayerMap/{numPlayer}
-        public List<List<int>> GetPlayerMap(int numPlayer) {
+        public List<List<int>> GetPlayerMap(int numPlayer)
+        {
             return _gameService.ListMap[numPlayer].Body;
         }
 
@@ -68,11 +68,11 @@ namespace Bataille_Navale.Controllers
                 _gameService.ListMap[numPlayer].PlaceShip(numShip, line, column, orientation);
                 return Ok();
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return StatusCode(400);
             }
-            
+
         }
 
         [HttpPut("Target/{numPlayer}")]
@@ -96,7 +96,7 @@ namespace Bataille_Navale.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteGame(int id)
         {
-            if(_gameService.DeleteGame(id))
+            if (_gameService.DeleteGame(id))
                 return Ok();
             return StatusCode(400);
         }
@@ -105,10 +105,10 @@ namespace Bataille_Navale.Controllers
         [HttpPut("CreatePlayer")]
         public IActionResult CreatePlayer([FromForm] string name)
         {
-            PlayerDTO p = _playerRepository.CreatePlayer(name);
-            if(p!=null)
+            PlayerDTO p = _gameService.CreatePlayer(name);
+            if (p != null)
             {
-                return    Ok(p);
+                return Ok(p);
             }
 
             return StatusCode(400);
@@ -118,7 +118,7 @@ namespace Bataille_Navale.Controllers
         [HttpDelete("Players/{playerId}")]
         public IActionResult DeletePlayer(int playerId)
         {
-            if (_playerRepository.DeletePlayer(playerId))
+            if (_gameService.DeletePlayer(playerId))
                 return Ok();
 
             return StatusCode(400); // We should not care ?
@@ -128,7 +128,8 @@ namespace Bataille_Navale.Controllers
         [HttpPost("Players/{playerId}")]
         public IActionResult UpdatePlayer(int playerId, [FromForm] string name)
         {
-            if(_playerRepository.UpdatePlayer(playerId, name))
+            PlayerDTO p = _gameService.UpdatePlayer(playerId, name);
+            if (p != null)
                 return Ok();
 
             return StatusCode(400);

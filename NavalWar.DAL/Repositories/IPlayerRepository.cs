@@ -14,6 +14,6 @@ namespace NavalWar.DAL.Repositories
         public PlayerDTO GetPlayer(int id);
         public PlayerDTO CreatePlayer(string name);
         public bool DeletePlayer(int id);
-        public bool UpdatePlayer(int id, string name);
+        public PlayerDTO UpdatePlayer(int id, string name);
     }
 }

@@ -23,14 +23,6 @@ namespace NavalWar.DAL.Repositories
         {
             Map m = new Map() { Line = line, Column = column, IdInGame = idInGame, _associatedPlayer = _context.Players.First(x => x.Id == idPlayer) };
 
-            /*string body = "";
-            for (int i = 0; i < line * column; i++)
-            {
-                body += "-1|";
-            }
-            m.ListTarget = "";
-            m.Body = body;*/
-
             m.Body = new List<List<int>>();
             for (int i = 0; i < line; i++)
             {
@@ -39,10 +31,9 @@ namespace NavalWar.DAL.Repositories
                     list.Add(-1);
                 m.Body.Add(list);
             }
-
+            m.ListTarget = string.Empty;
             _context.Maps.Add(m);
-            /*_context.SaveChanges();*/
-            _context.SaveChangesAsync(); // Asynchronously because we will manage so many players that it could make some problems? Ask the T-shirt (Tea Sheur)
+            _context.SaveChanges();
 
 
             return m.toDTO();
@@ -61,7 +52,6 @@ namespace NavalWar.DAL.Repositories
             if(g == null)
                 return false;
 
-            // We must destroy associated maps right ?
             if (g.Map0 != null)
             {
                 _context.DeleteMaps(g.Map0.IdMap);

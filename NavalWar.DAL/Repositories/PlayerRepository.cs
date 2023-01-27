@@ -16,7 +16,7 @@ namespace NavalWar.DAL.Repositories
 
         public PlayerRepository(NavalContext context)
         {
-            _context = context;
+            _context = context; 
         }
 
         public PlayerDTO GetPlayer(int id)
@@ -53,17 +53,17 @@ namespace NavalWar.DAL.Repositories
         }
            
         // Only the name can be changed
-        public bool UpdatePlayer(int id, string name)
+        public PlayerDTO UpdatePlayer(int id, string name)
         {
             Player p = _context.Players.Find(id);
             if (p != null)
             {
                 p.Name = name;
                 _context.SaveChanges();
-                return true;
+                return p.toDTO();
             }
 
-            return false;
+            return null;           
 
         }
     }

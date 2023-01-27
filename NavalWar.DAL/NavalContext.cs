@@ -42,7 +42,7 @@ namespace NavalWar.DAL
                 .Property(elt => elt.Map1)
                 .IsRequired();*/
 
-            // Ask the TeaSheur why this part is necesseraly ? We already have a method to Serialize Map list so why isn't it automatically used for ?
+            // Ask the t-shirt why this part is necessary ? We already have a method to Serialize Map list so why isn't it automatically used for ?
             modelBuilder.Entity<Game>()
                 .Property(elt => elt.Map0)
                 .HasConversion(

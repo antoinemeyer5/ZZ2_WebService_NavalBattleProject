@@ -9,6 +9,7 @@ namespace NavalWar.Business
     {
         private GameDTO _game;
         private IGameRepository _gameRepository;
+        private IPlayerRepository _playerRepository; //Maybe should we moove it into GameService --> OFC jalil you're just stupid
 
         public MapDTO[] ListMap { get { return _game.ListMap; } set { _game.ListMap = value; } } 
 
@@ -29,10 +30,11 @@ namespace NavalWar.Business
             return _game.IdGame;
         }
 
-        public GameService(IGameRepository gameRepository)
+        public GameService(IGameRepository gameRepository, IPlayerRepository playerRepository)
         {
             _game = null;
             _gameRepository = gameRepository;
+            _playerRepository = playerRepository;
         }
 
         public void HostGame(PlayerDTO p)
@@ -55,6 +57,22 @@ namespace NavalWar.Business
             return _gameRepository.DeleteGame(id);
         }
 
+
+        public PlayerDTO UpdatePlayer(int playerId, string name)
+        {
+            return _playerRepository.UpdatePlayer(playerId, name);
+        }
+
+        public bool DeletePlayer(int playerId)
+        {
+            return _playerRepository.DeletePlayer(playerId);
+        }
+
+
+        public PlayerDTO CreatePlayer(string name)
+        {
+            return _playerRepository.CreatePlayer(name);
+        }
     }
 
 }
