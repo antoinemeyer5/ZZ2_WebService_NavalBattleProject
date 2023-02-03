@@ -1,8 +1,4 @@
-﻿using Microsoft.VisualBasic;
-
-
-
-namespace NavalWar.DTO
+﻿namespace NavalWar.DTO
 {
     public enum Orientation { HORIZONTAL, VERTICAL };
     public class MapDTO

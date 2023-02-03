@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NavalWar.DTO;
 using NavalWar.Business;
-using NavalWar.DAL.Repositories;
+using NavalWar.DTO;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Bataille_Navale.Controllers
@@ -23,6 +22,9 @@ namespace Bataille_Navale.Controllers
 
             _gameService.HostGame(p);
             _gameService.JoinGame(p1);
+
+            p = _gameService.UpdatePlayer(p.Id, "salut");
+            Console.WriteLine(p.Name);
 
 
             for (int i = 0; i < gameService.GetMap(0).Count; i++)

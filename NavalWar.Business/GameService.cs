@@ -1,6 +1,5 @@
-﻿using NavalWar.DTO;
-using NavalWar.DAL.Repositories;
-using NavalWar.DAL.Models;
+﻿using NavalWar.DAL.Repositories;
+using NavalWar.DTO;
 
 namespace NavalWar.Business
 {
@@ -11,7 +10,7 @@ namespace NavalWar.Business
         private IGameRepository _gameRepository;
         private IPlayerRepository _playerRepository; //Maybe should we moove it into GameService --> OFC jalil you're just stupid
 
-        public MapDTO[] ListMap { get { return _game.ListMap; } set { _game.ListMap = value; } } 
+        public MapDTO[] ListMap { get { return _game.ListMap; } set { _game.ListMap = value; } }
 
         public GameService(int idGame, MapDTO m0, MapDTO m1)
         {
@@ -22,7 +21,7 @@ namespace NavalWar.Business
 
         public GameService(GameDTO g)
         {
-            _game= g;
+            _game = g;
         }
 
         public int GetId()
@@ -40,7 +39,7 @@ namespace NavalWar.Business
         public void HostGame(PlayerDTO p)
         {
             _game = _gameRepository.CreateGame();
-            _game.ListMap[0] =  _gameRepository.CreateMap(10,10,_game.IdGame,p.Id);
+            _game.ListMap[0] = _gameRepository.CreateMap(10, 10, _game.IdGame, p.Id);
         }
         public void JoinGame(PlayerDTO p)
         {
