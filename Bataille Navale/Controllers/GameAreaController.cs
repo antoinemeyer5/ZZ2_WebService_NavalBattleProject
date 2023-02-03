@@ -14,35 +14,7 @@ namespace Bataille_Navale.Controllers
 
         public GameAreaController(IGameService gameService)
         {
-
             _gameService = gameService;
-
-            PlayerDTO p = _gameService.CreatePlayer("coucou");
-            PlayerDTO p1 = _gameService.CreatePlayer("c'est moi tchoupi");
-
-            _gameService.HostGame(p);
-            _gameService.JoinGame(p1);
-
-            p = _gameService.UpdatePlayer(p.Id, "salut");
-            Console.WriteLine(p.Name);
-
-
-            for (int i = 0; i < gameService.GetMap(0).Count; i++)
-            {
-                for (int j = 0; j < gameService.GetMap(0)[i].Count; j++)
-                {
-                    Console.Write(gameService.GetMap(0)[i][j] + "|");
-                }
-                Console.WriteLine();
-            }
-            for (int i = 0; i < gameService.GetMap(1).Count; i++)
-            {
-                for (int j = 0; j < gameService.GetMap(1)[i].Count; j++)
-                {
-                    Console.Write(gameService.GetMap(1)[i][j] + "|");
-                }
-                Console.WriteLine();
-            }
         }
 
         [HttpGet("GetGameId")]
