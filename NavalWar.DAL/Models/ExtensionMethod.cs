@@ -43,21 +43,9 @@ namespace ExtensionMethod
 
             MapDTO m = new MapDTO(map.Line, map.Column);
             m.AssociatedPlayer = map._associatedPlayer.toDTO();
-
-            m.Body = map.Body;/* new List<List<int>>();
-
-            List<int> l = map.Body.Split("|").Where(s => !string.IsNullOrEmpty(s)).Select(int.Parse).ToList();
-            m.Body = new List<List<int>>();
-            for(int i = 0; i < map.Line;i++)
-            {
-                m.Body.Add(new List<int>());
-                for(int j = 0; j < map.Column;j++)
-                {
-                    m.Body[i].Add(l[i*map.Line+j]);
-                }
-            }*/
-
+            m.Body = map.Body;
             return m;
         }
+
     }
 }
