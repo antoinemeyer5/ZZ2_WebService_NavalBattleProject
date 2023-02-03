@@ -64,6 +64,7 @@ namespace NavalWar.DAL
             try
             {
                 Maps.Remove(Maps.Find(id));
+                SaveChanges();
             }
             catch
             {

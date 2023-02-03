@@ -33,11 +33,9 @@ namespace NavalWar.DAL.Migrations
                         .HasColumnType("real");
 
                     b.Property<string>("Map0")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Map1")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Result")

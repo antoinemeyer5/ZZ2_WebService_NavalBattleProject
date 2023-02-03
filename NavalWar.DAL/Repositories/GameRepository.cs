@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 using ExtensionMethod;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using NavalWar.DAL.Models;
 using NavalWar.DTO;
 
@@ -33,7 +34,9 @@ namespace NavalWar.DAL.Repositories
             }
             m.ListTarget = string.Empty;
             _context.Maps.Add(m);
-            _context.SaveChanges();
+
+            // -- Point to think about: Id generated when we save the game but becarefull, game saved only if we did another action
+            //_context.SaveChanges();
 
 
             return m.toDTO();
@@ -42,6 +45,25 @@ namespace NavalWar.DAL.Repositories
         public GameDTO CreateGame()
         {
             Game g = new Game() { Result = -1, WinnerName = string.Empty, Duration = 0 };
+
+            // -- Point to think about: Id generated when we save the game but becarefull, game saved only if we did another action
+
+            int id = _context.Games.Max(elt => elt.IdGame);
+            g.IdGame= id;   
+
+            _context.Games.Add(g);
+
+
+            return g.toDTO();
+        }
+
+        public GameDTO GetGame(int id)
+        {
+            Game g = _context.Games.Find(id);
+
+            if (g == null)
+                return null;
+
             return g.toDTO();
         }
 

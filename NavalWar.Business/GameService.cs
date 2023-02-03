@@ -73,6 +73,18 @@ namespace NavalWar.Business
         {
             return _playerRepository.CreatePlayer(name);
         }
+
+        public GameDTO GetGame(int id)
+        {
+            return _gameRepository.GetGame(id);
+        }
+
+
+        public GameDTO CreateGame()
+        {
+            return _gameRepository.CreateGame(); 
+        }
+
     }
 
 }

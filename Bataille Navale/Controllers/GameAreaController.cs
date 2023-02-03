@@ -51,6 +51,35 @@ namespace Bataille_Navale.Controllers
             return _gameService.GetId();
         }
 
+        [HttpGet("Games/{id}")]
+        //Get api/Games/{id}
+        public IActionResult GetGame(int id)
+        {
+            GameDTO g =  _gameService.GetGame(id);
+            if(g == null)
+            {
+                return StatusCode(400);
+            }
+
+            return Ok(g);
+        }
+
+
+        [HttpPut("Games")]
+        // PUT api/Games
+        public IActionResult NewGame()
+        {
+            GameDTO g = _gameService.CreateGame();
+            
+            if(g==null)
+            {
+                return StatusCode(400); 
+            }
+
+            return Ok(g);
+        }
+
+
         [HttpGet("GetPlayerMap/{numPlayer}")]
         // GET api/GameArea/GetPlayerMap/{numPlayer}
         public List<List<int>> GetPlayerMap(int numPlayer)
@@ -134,5 +163,10 @@ namespace Bataille_Navale.Controllers
 
             return StatusCode(400);
         }
+
+       
+
+
+
     }
 }
