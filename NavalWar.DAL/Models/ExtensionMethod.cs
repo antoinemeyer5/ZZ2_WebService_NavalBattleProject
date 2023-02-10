@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace ExtensionMethod
 {
@@ -43,9 +44,9 @@ namespace ExtensionMethod
 
             MapDTO m = new MapDTO(map.Line, map.Column);
             m.AssociatedPlayer = map._associatedPlayer.toDTO();
-
-            m.Body = map.Body;/* new List<List<int>>();
-
+            m.Body = JsonSerializer.Deserialize<List<List<int>>>(map.Body, (JsonSerializerOptions)null);
+            
+            /*
             List<int> l = map.Body.Split("|").Where(s => !string.IsNullOrEmpty(s)).Select(int.Parse).ToList();
             m.Body = new List<List<int>>();
             for(int i = 0; i < map.Line;i++)

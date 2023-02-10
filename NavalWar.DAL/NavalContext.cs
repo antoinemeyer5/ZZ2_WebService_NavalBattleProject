@@ -25,12 +25,12 @@ namespace NavalWar.DAL
             modelBuilder.Entity<Game>().ToTable("Game");
             modelBuilder.Entity<Player>().ToTable("Player"); 
             modelBuilder.Entity<Map>().ToTable("Map");
-            modelBuilder
+            /*modelBuilder
                 .Entity<Map>()
                 .Property(elt => elt.Body)
                 .HasConversion(
                     v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
-                    v => JsonSerializer.Deserialize<List<List<int>>>(v, (JsonSerializerOptions)null));
+                    v => JsonSerializer.Deserialize<List<List<int>>>(v, (JsonSerializerOptions)null));*/
 
             // We save game only if we have Map right ? Or the game doesn't have any sense
             /*modelBuilder
