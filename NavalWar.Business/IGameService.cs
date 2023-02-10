@@ -13,6 +13,10 @@ namespace NavalWar.Business
 
         public List<List<int>> GetMap(int idPlayer);
 
+        public List<List<int>> GetMap(int gameID, int idPlayer);
+
+        public MapDTO GetMapDTO(int gameID, int idPlayer);
+
         public bool DeleteGame(int id);
 
         public PlayerDTO UpdatePlayer(int playerId, string name);

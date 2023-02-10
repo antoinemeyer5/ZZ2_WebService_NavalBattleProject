@@ -52,6 +52,31 @@ namespace NavalWar.Business
             return _game.ListMap[idPlayer].Body;
         }
 
+
+        public List<List<int>> GetMap(int gameID, int idPlayer)
+        {
+            GameDTO g = GetGame(gameID);
+            List<List<int>> L = null;
+            if (g != null)
+            {
+                L = g.ListMap[idPlayer].Body;
+            }
+
+            return L;
+        }
+
+        public MapDTO GetMapDTO(int gameID, int idPlayer)
+        {
+            GameDTO g = GetGame(gameID);
+            MapDTO m = null;
+            if (g != null)
+            {
+                m = g.ListMap[idPlayer];
+            }
+
+            return m;
+        }
+
         public bool DeleteGame(int id)
         {
             return _gameRepository.DeleteGame(id);
@@ -84,6 +109,9 @@ namespace NavalWar.Business
         {
             return _gameRepository.CreateGame(); 
         }
+
+
+
 
     }
 

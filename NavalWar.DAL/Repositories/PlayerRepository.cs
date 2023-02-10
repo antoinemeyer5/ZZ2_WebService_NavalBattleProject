@@ -52,7 +52,7 @@ namespace NavalWar.DAL.Repositories
             return false;   
         }
            
-        // Only the name can be changed
+        // Only the attribut name can be changed
         public PlayerDTO UpdatePlayer(int id, string name)
         {
             Player p = _context.Players.Find(id);

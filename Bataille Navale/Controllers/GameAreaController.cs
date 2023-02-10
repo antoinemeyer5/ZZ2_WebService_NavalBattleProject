@@ -65,36 +65,46 @@ namespace Bataille_Navale.Controllers
         }
 
 
+        [HttpGet("Games/{gameID}/Maps/{numPlayer}")]
+        // GET api/GameArea/GetPlayerMap/{numPlayer}
+        public IActionResult GetPlayerMap(int gameID, int numPlayer)
+        {
+            if(numPlayer < 0 && numPlayer >1)// numplayer € [0; 1]
+                return StatusCode(400);
+
+            List<List<int>> L = _gameService.GetMap(gameID, numPlayer);
+
+            if (L == null)
+                return StatusCode(400);
+
+            return Ok(L); 
+            //return _gameService.ListMap[numPlayer].Body;
+        }
+
         [HttpPut("Games")]
         // PUT api/Games
         public IActionResult NewGame()
         {
             GameDTO g = _gameService.CreateGame();
-            
-            if(g==null)
+
+            if (g == null)
             {
-                return StatusCode(400); 
+                return StatusCode(400);
             }
 
             return Ok(g);
         }
 
 
-        [HttpGet("GetPlayerMap/{numPlayer}")]
-        // GET api/GameArea/GetPlayerMap/{numPlayer}
-        public List<List<int>> GetPlayerMap(int numPlayer)
+        // PUT api/GameArea/Games/{gameID}/Putship/numPlayer
+        [HttpPut("Games/{gameID}/PutShip/{numPlayer}")]
+        public IActionResult PutShip(int gameID, int numPlayer, [FromForm] int numShip, [FromForm] int line, [FromForm] int column, [FromForm] Orientation orientation)
         {
-            return _gameService.ListMap[numPlayer].Body;
-        }
 
-
-        // PUT api/GameArea/numPlayer
-        [HttpPut("PutShip/{numPlayer}")]
-        public IActionResult PutShip(int numPlayer, [FromForm] int numShip, [FromForm] int line, [FromForm] int column, [FromForm] Orientation orientation)
-        {
             try
             {
-                _gameService.ListMap[numPlayer].PlaceShip(numShip, line, column, orientation);
+                MapDTO g = _gameService.GetMapDTO(gameID, numPlayer);
+                g.PlaceShip(numShip, line, column, orientation); // Need to save => waiting for Lyloo update
                 return Ok();
             }
             catch (Exception)
@@ -104,14 +114,15 @@ namespace Bataille_Navale.Controllers
 
         }
 
-        [HttpPut("Target/{numPlayer}")]
-        // PUT api/GameArea/Target/numPlayer
-        public IActionResult PutTarget(int numPlayer, [FromForm] int line, [FromForm] int column)
+        [HttpPut("Games/{gameID}/Target/{numPlayer}")]
+        // PUT api/GameArea/Games/{gameID}/Target/numPlayer
+        public IActionResult PutTarget(int gameID, int numPlayer, [FromForm] int line, [FromForm] int column)
         {
-            MapDTO target = numPlayer == 0 ? _gameService.ListMap[1] : _gameService.ListMap[0];
+            GameDTO g = _gameService.GetGame(gameID);
+            MapDTO target = numPlayer == 0 ? g.ListMap[1] : g.ListMap[0];
             try
             {
-                string result = _gameService.ListMap[numPlayer].Target(line, column, target);
+                string result = g.ListMap[numPlayer].Target(line, column, target);
                 return Ok(result);
             }
             catch
@@ -121,8 +132,8 @@ namespace Bataille_Navale.Controllers
             }
         }
 
-        // DELETE api/GameArea/{id}
-        [HttpDelete("{id}")]
+        // DELETE api/GameArea/Games/{id}
+        [HttpDelete("Games/{id}")]
         public IActionResult DeleteGame(int id)
         {
             if (_gameService.DeleteGame(id))

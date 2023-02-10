@@ -47,11 +47,26 @@ namespace NavalWar.DAL.Repositories
             Game g = new Game() { Result = -1, WinnerName = string.Empty, Duration = 0 };
 
             // -- Point to think about: Id generated when we save the game but becarefull, game saved only if we did another action
+            int id;
+            if (_context.Games.Count() == 0)
+            {
+                id = 0;
+            }
+            else
+            {
+                id = _context.Games.Max(elt => elt.IdGame);
+            }
+            g.IdGame= id;
 
-            int id = _context.Games.Max(elt => elt.IdGame);
-            g.IdGame= id;   
 
+
+            g.Map0 = new Map();
+            g.Map1 = new Map();
+
+            _context.Maps.Add(g.Map0);
+            _context.Maps.Add(g.Map1);
             _context.Games.Add(g);
+            _context.SaveChanges();
 
 
             return g.toDTO();
@@ -89,6 +104,8 @@ namespace NavalWar.DAL.Repositories
             return true;
         
         }
+
+
 
 
 
