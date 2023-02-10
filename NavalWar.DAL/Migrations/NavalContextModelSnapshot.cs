@@ -43,9 +43,8 @@ namespace NavalWar.DAL.Migrations
                     b.Property<int>("Result")
                         .HasColumnType("int");
 
-                    b.Property<string>("WinnerName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("WinnerId")
+                        .HasColumnType("int");
 
                     b.HasKey("IdGame");
 

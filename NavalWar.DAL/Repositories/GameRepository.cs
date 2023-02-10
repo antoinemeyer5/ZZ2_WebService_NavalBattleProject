@@ -41,7 +41,7 @@ namespace NavalWar.DAL.Repositories
 
         public GameDTO CreateGame()
         {
-            Game g = new Game() { Result = -1, WinnerName = string.Empty, Duration = 0 };
+            Game g = new Game() { Result = -1, WinnerId = -1, Duration = 0 };
             return g.toDTO();
         }
 
@@ -49,7 +49,7 @@ namespace NavalWar.DAL.Repositories
         {
             Game g = _context.Games.Find(id);
 
-            if(g == null)
+            if (g == null)
                 return false;
 
             if (g.Map0 != null)
@@ -65,7 +65,7 @@ namespace NavalWar.DAL.Repositories
             _context.SaveChanges();
 
             return true;
-        
+
         }
 
 

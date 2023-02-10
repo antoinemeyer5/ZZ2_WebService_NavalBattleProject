@@ -11,7 +11,7 @@ using NavalWar.DAL;
 namespace NavalWar.DAL.Migrations
 {
     [DbContext(typeof(NavalContext))]
-    [Migration("20230127133927_init")]
+    [Migration("20230210122855_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -46,9 +46,8 @@ namespace NavalWar.DAL.Migrations
                     b.Property<int>("Result")
                         .HasColumnType("int");
 
-                    b.Property<string>("WinnerName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("WinnerId")
+                        .HasColumnType("int");
 
                     b.HasKey("IdGame");
 

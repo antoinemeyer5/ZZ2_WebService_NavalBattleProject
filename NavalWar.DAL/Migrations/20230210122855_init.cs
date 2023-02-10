@@ -19,7 +19,7 @@ namespace NavalWar.DAL.Migrations
                     Map0 = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Map1 = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Result = table.Column<int>(type: "int", nullable: false),
-                    WinnerName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    WinnerId = table.Column<int>(type: "int", nullable: false),
                     Duration = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
