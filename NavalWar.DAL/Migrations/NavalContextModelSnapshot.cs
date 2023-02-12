@@ -32,20 +32,23 @@ namespace NavalWar.DAL.Migrations
                     b.Property<float>("Duration")
                         .HasColumnType("real");
 
-                    b.Property<string>("Map0")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Map1")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("Result")
                         .HasColumnType("int");
 
-                    b.Property<string>("WinnerName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("WinnerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("idMap0")
+                        .HasColumnType("int");
+
+                    b.Property<int>("idMap1")
+                        .HasColumnType("int");
 
                     b.HasKey("IdGame");
+
+                    b.HasIndex("idMap0");
+
+                    b.HasIndex("idMap1");
 
                     b.ToTable("Game", (string)null);
                 });
@@ -101,6 +104,25 @@ namespace NavalWar.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Player", (string)null);
+                });
+
+            modelBuilder.Entity("NavalWar.DAL.Models.Game", b =>
+                {
+                    b.HasOne("NavalWar.DAL.Models.Map", "Map0")
+                        .WithMany()
+                        .HasForeignKey("idMap0")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("NavalWar.DAL.Models.Map", "Map1")
+                        .WithMany()
+                        .HasForeignKey("idMap1")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Map0");
+
+                    b.Navigation("Map1");
                 });
 
             modelBuilder.Entity("NavalWar.DAL.Models.Map", b =>

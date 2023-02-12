@@ -15,7 +15,7 @@ namespace NavalWar.Business
 
         public GameService(int idGame, MapDTO m0, MapDTO m1)
         {
-            _game = new GameDTO() { Result = -1, WinnerName = string.Empty, Duration = 0, IdGame = idGame };
+            _game = new GameDTO() { Result = -1, WinnerId = -1, Duration = 0, IdGame = idGame };
             _game.ListMap[0] = m0;
             _game.ListMap[1] = m1;
         }

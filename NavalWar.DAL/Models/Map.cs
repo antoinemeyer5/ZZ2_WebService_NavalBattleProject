@@ -18,8 +18,7 @@ namespace NavalWar.DAL.Models
         public int Column { get; set; }
         public int Line { get; set; }
 
-        /* public string Body { get; set; } */ // Liste de int plus facile à traiter non ?
-        public List<List<int>> Body { get; set; }
+        public string Body { get; set; }
 
         [StringLength(1000)]
         public string ListTarget {get;set;}

@@ -21,41 +21,21 @@ namespace NavalWar.DAL
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //Renommage de table ?
             modelBuilder.Entity<Game>().ToTable("Game");
             modelBuilder.Entity<Player>().ToTable("Player"); 
             modelBuilder.Entity<Map>().ToTable("Map");
-            modelBuilder
-                .Entity<Map>()
-                .Property(elt => elt.Body)
-                .HasConversion(
-                    v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
-                    v => JsonSerializer.Deserialize<List<List<int>>>(v, (JsonSerializerOptions)null));
 
-            // We save game only if we have Map right ? Or the game doesn't have any sense
-            /*modelBuilder
-                .Entity<Game>()
-                .Property(elt => elt.Map0)
-                .IsRequired();
-            modelBuilder
-                .Entity<Game>()
-                .Property(elt => elt.Map1)
-                .IsRequired();*/
-
-            // Ask the t-shirt why this part is necessary ? We already have a method to Serialize Map list so why isn't it automatically used for ?
             modelBuilder.Entity<Game>()
-                .Property(elt => elt.Map0)
-                .HasConversion(
-                    v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
-                    v => JsonSerializer.Deserialize<Map>(v, (JsonSerializerOptions)null));
+                .HasOne(g => g.Map1)
+                .WithMany()
+                .HasForeignKey(g => g.idMap1)
+                .OnDelete(DeleteBehavior.NoAction);
+
             modelBuilder.Entity<Game>()
-                .Property(elt => elt.Map1)
-                .HasConversion(
-                    v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
-                    v => JsonSerializer.Deserialize<Map>(v, (JsonSerializerOptions)null));
-
-
-
+                .HasOne(g => g.Map0)
+                .WithMany()
+                .HasForeignKey(g => g.idMap0)
+                .OnDelete(DeleteBehavior.NoAction);
         }
 
 
