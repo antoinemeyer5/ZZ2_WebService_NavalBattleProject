@@ -47,39 +47,34 @@ namespace NavalWar.DAL.Repositories
         {
             Game g = new Game() { Result = -1, WinnerId = -1, Duration = 0 };
 
-            // -- Point to think about: Id generated when we save the game but becarefull, game saved only if we did another action
-            int id;
-            if (_context.Games.Count() == 0)
-            {
-                id = 0;
-            }
-            else
-            {
-                id = _context.Games.Max(elt => elt.IdGame);
-            }
-            g.IdGame= id;
+            Map m1 = new Map();
+            Map m2 = new Map();
 
-
-
-            g.Map0 = new Map();
-            g.Map1 = new Map();
-
-            _context.Maps.Add(g.Map0);
-            _context.Maps.Add(g.Map1);
-            _context.Games.Add(g);
+            _context.Maps.Add(m1);
+            _context.Maps.Add(m2);
             _context.SaveChanges();
 
+            g.Map0= m1;
+            g.Map1= m2;
+            _context.Games.Add(g);
+            _context.SaveChanges();
 
             return g.toDTO();
         }
 
         public GameDTO GetGame(int id)
         {
-            Game g = _context.Games.Find(id);
-
+            Game g = _context.Games.FirstOrDefault(game => game.IdGame == id);
+            
             if (g == null)
                 return null;
 
+            Map m0 = _context.Maps.FirstOrDefault(m => m.IdMap == g.idMap0);
+            Map m1 = _context.Maps.FirstOrDefault(m => m.IdMap == g.idMap1);
+
+            g.Map0 = m0;
+            g.Map1 = m1;
+            
             return g.toDTO();
         }
 
@@ -107,8 +102,75 @@ namespace NavalWar.DAL.Repositories
         }
 
 
+        public bool PutShip(int gameID, int numPlayer, int numShip, int line, int column, Orientation orientation)
+        {
+            Game g = _context.Games.Find(gameID);
+            if (g == null)
+                return false;
+            Map m = null;
+            if (numPlayer == 0)
+                m = _context.Maps.Find(g.idMap0);
+            else
+               m = _context.Maps.Find(g.idMap1);
 
+            if (m == null)
+                return false;
 
+            MapDTO m1 = m.toDTO();
+
+            try
+            {
+                m1.PlaceShip(numShip, line, column, orientation);
+                m.Body = JsonSerializer.Serialize(m1.Body);
+                _context.SaveChanges();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool Target(int gameID, int numPlayer, int line, int column)
+        {
+            Game g = _context.Games.Find(gameID);
+            if(g== null)
+                return false;
+
+            Map m = null;
+            if (numPlayer == 0)
+                m = _context.Maps.Find(g.idMap1);
+            else
+                m = _context.Maps.Find(g.idMap0);
+
+            if (m == null)
+                return false;
+            
+            MapDTO m1 = m.toDTO();
+
+            // DEBUG: penser à modifier plus tard pour retour en fonction res (savoir le pouruqoi)
+            try
+            {
+                string s = m1.Target(line, column, m1);
+                if(s == "Touché !" || s == "Coulé!")
+                {
+                    m.Body = JsonSerializer.Serialize(m1.Body);
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
+        }
 
     }
 }

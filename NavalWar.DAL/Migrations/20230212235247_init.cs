@@ -34,7 +34,8 @@ namespace NavalWar.DAL.Migrations
                     Line = table.Column<int>(type: "int", nullable: false),
                     Body = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ListTarget = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
-                    associatedPlayerId = table.Column<int>(name: "_associatedPlayerId", type: "int", nullable: false)
+                    associatedPlayerId = table.Column<int>(name: "_associatedPlayerId", type: "int", nullable: true),
+                    idPlayer = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -43,8 +44,7 @@ namespace NavalWar.DAL.Migrations
                         name: "FK_Map_Player__associatedPlayerId",
                         column: x => x.associatedPlayerId,
                         principalTable: "Player",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(

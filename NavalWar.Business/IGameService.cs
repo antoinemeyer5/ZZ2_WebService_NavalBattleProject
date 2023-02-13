@@ -27,5 +27,9 @@ namespace NavalWar.Business
 
         public GameDTO CreateGame();
 
+        public bool PutShip(int gameID, int numPlayer,  int numShip, int line, int column, Orientation orientation);
+        public bool Target(int gameID, int numPlayer, int line, int column);
+
+
     }
 }

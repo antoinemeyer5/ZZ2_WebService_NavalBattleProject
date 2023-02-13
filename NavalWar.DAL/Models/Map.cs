@@ -15,15 +15,17 @@ namespace NavalWar.DAL.Models
         [Key]
         public int IdMap { get; set; }
         public int IdInGame { get; set; }
-        public int Column { get; set; }
-        public int Line { get; set; }
+        public int Column { get; set; } = 10;
+        public int Line { get; set; } = 10;
 
-        public string Body { get; set; }
+        public string Body { get; set; } = string.Empty;
 
         [StringLength(1000)]
-        public string ListTarget {get;set;}
+        public string ListTarget {get;set;} = string.Empty;
 
-        public Player _associatedPlayer { get; set; }
+        public Player? _associatedPlayer { get; set; }
+        public int? idPlayer { get; set; }
+
     }
 
     

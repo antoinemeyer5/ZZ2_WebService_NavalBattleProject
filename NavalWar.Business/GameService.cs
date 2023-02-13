@@ -101,7 +101,13 @@ namespace NavalWar.Business
 
         public GameDTO GetGame(int id)
         {
-            return _gameRepository.GetGame(id);
+            try
+            {
+                return _gameRepository.GetGame(id);
+            }catch(Exception e) {
+                throw;
+            }
+            
         }
 
 
@@ -110,6 +116,16 @@ namespace NavalWar.Business
             return _gameRepository.CreateGame(); 
         }
 
+
+        public bool PutShip(int gameID, int numPlayer, int numShip, int line, int column, Orientation orientation)
+        {
+            return _gameRepository.PutShip(gameID, numPlayer, numShip, line, column, orientation);
+        }
+
+        public bool Target(int gameID, int numPlayer, int line, int column)
+        {
+            return _gameRepository.Target(gameID, numPlayer, line, column);
+        }
 
 
 

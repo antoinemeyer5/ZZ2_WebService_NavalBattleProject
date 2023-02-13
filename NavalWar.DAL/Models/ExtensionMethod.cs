@@ -42,9 +42,25 @@ namespace ExtensionMethod
         {
 
             MapDTO m = new MapDTO(map.Line, map.Column);
-            m.AssociatedPlayer = map._associatedPlayer.toDTO();
+            if(m.AssociatedPlayer != null)
+                m.AssociatedPlayer = map._associatedPlayer.toDTO();
 
-            m.Body = JsonSerializer.Deserialize<List<List<int>>>(map.Body, (JsonSerializerOptions)null);
+            if (map.Body != string.Empty)
+            {
+                m.Body = JsonSerializer.Deserialize<List<List<int>>>(map.Body, (JsonSerializerOptions)null);
+            }
+            else
+            {
+                m.Body = new List<List<int>>();
+                for (int i = 0; i < map.Line; i++)
+                {
+                    List<int> l = new List<int>();
+                    for(int j = 0; j < map.Column; j++)
+                        l.Add(-1);
+                    
+                    m.Body.Add(l);
+                }
+            }
             return m;
         }
     }
