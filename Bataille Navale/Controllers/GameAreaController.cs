@@ -1,6 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NavalWar.Business;
 using NavalWar.DTO;
+using NavalWar.Business;
+using NavalWar.DAL.Repositories;
+using System.Text.Json.Serialization;
+using System.Net.Http.Json;
+using System.Text.Json;
+
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Bataille_Navale.Controllers
@@ -11,63 +16,112 @@ namespace Bataille_Navale.Controllers
     public class GameAreaController : ControllerBase
     {
         private readonly IGameService _gameService;
-
         public GameAreaController(IGameService gameService)
         {
             _gameService = gameService;
         }
 
-        [HttpGet("GetGameId")]
-        // GET api/GameArea/GetGameId
-        public int GetGameID()
-        {
-
-            return _gameService.GetId();
-        }
-
-        [HttpGet("GetPlayerMap/{numPlayer}")]
-        // GET api/GameArea/GetPlayerMap/{numPlayer}
-        public List<List<int>> GetPlayerMap(int numPlayer)
-        {
-            return _gameService.ListMap[numPlayer].Body;
-        }
-
-
-        // PUT api/GameArea/numPlayer
-        [HttpPut("PutShip/{numPlayer}")]
-        public IActionResult PutShip(int numPlayer, [FromForm] int numShip, [FromForm] int line, [FromForm] int column, [FromForm] Orientation orientation)
+        [HttpGet("Games/{id}")]
+        //Get api/Games/{id}
+        public IActionResult GetGame(int id)
         {
             try
             {
-                _gameService.ListMap[numPlayer].PlaceShip(numShip, line, column, orientation);
+                GameDTO g = _gameService.GetGame(id);
+                return Ok(g);
+            }
+            catch(Exception)
+            {
+                return StatusCode(400);
+            }  
+        }
+
+
+        [HttpGet("Games/{gameID}/Maps/{numPlayer}")]
+        // GET api/GameArea/Games/{gameID}/Maps/{numPlayer/Map}
+        public IActionResult GetPlayerMap(int gameID, int numPlayer)
+        {
+            if(numPlayer < 0 && numPlayer >1)// numplayer € [0; 1]
+                return StatusCode(400);
+
+            try
+            {
+                GameDTO g = _gameService.GetGame(gameID);
+                return Ok(g.ListMap[numPlayer]);    
+            }
+            catch(Exception)
+            {
+                return StatusCode(400);
+            }
+        }
+
+        [HttpPut("Games")]
+        // PUT api/GameArea/Games
+        public IActionResult NewGame()
+        {
+            GameDTO g = _gameService.CreateGame();
+
+            if (g == null)
+            {
+                return StatusCode(400);
+            }
+            for (int i = 0; i < g.ListMap[0].LineMax; i++)
+            {
+                for (int j = 0; j < g.ListMap[0].ColumMax; j++)
+                {
+                    Console.WriteLine("ee");
+                    Console.WriteLine(g.ListMap[0].Body[i][j]);
+                }
+            }
+            /*return Ok(JsonSerializer.Serialize(g));*/
+            return Ok(g);
+
+        }
+
+
+        // PUT api/GameArea/Games/{gameID}/Putship/numPlayer
+        [HttpPut("Games/{gameID}/PutShip/{numPlayer}")]
+        public IActionResult PutShip(int gameID, int numPlayer, [FromForm] int numShip, [FromForm] int line, [FromForm] int column, [FromForm] Orientation orientation)
+        {
+            if(numPlayer< 0 || numPlayer > 1)
+                return StatusCode(400);
+
+            GameDTO g = _gameService.GetGame(gameID);
+            if (g == null)
+                return StatusCode(400);
+
+            int i = (numPlayer==0) ? 1 : 0;
+            MapDTO m = g.ListMap[i];
+            if (m == null)
+                return StatusCode(400);
+            try
+            {
+                m.PlaceShip(numShip, line, column, orientation);
+                bool res = _gameService.PutShip(gameID, numPlayer, numShip, line, column, orientation);
+                
+                if (res) return Ok();
+            }
+            catch(Exception)
+            {
+                
+            }
+
+            return StatusCode(400);
+        }
+
+        [HttpPut("Games/{gameID}/Target/{numPlayer}")]
+        // PUT api/GameArea/Games/{gameID}/Target/numPlayer
+        public IActionResult PutTarget(int gameID, int numPlayer, [FromForm] int line, [FromForm] int column)
+        {
+            bool res = _gameService.Target(gameID, numPlayer, line, column);
+            if (res)
                 return Ok();
-            }
-            catch (Exception)
-            {
-                return StatusCode(400);
-            }
 
+            return StatusCode(400);
         }
 
-        [HttpPut("Target/{numPlayer}")]
-        // PUT api/GameArea/Target/numPlayer
-        public IActionResult PutTarget(int numPlayer, [FromForm] int line, [FromForm] int column)
-        {
-            MapDTO target = numPlayer == 0 ? _gameService.ListMap[1] : _gameService.ListMap[0];
-            try
-            {
-                string result = _gameService.ListMap[numPlayer].Target(line, column, target);
-                return Ok(result);
-            }
-            catch
-            (Exception)
-            {
-                return StatusCode(400);
-            }
-        }
-
-        // DELETE api/GameArea/{id}
-        [HttpDelete("{id}")]
+        // DELETE api/GameArea/Games/{id}
+        [HttpDelete("Games/{id}")]
         public IActionResult DeleteGame(int id)
         {
             if (_gameService.DeleteGame(id))
@@ -108,5 +162,10 @@ namespace Bataille_Navale.Controllers
 
             return StatusCode(400);
         }
+
+        // Manque associer player à MAP
+
+
+
     }
 }

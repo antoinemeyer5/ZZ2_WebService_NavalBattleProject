@@ -12,11 +12,23 @@ namespace NavalWar.Business
 
         public List<List<int>> GetMap(int idPlayer);
 
+        public List<List<int>> GetMap(int gameID, int idPlayer);
+
+        public MapDTO GetMapDTO(int gameID, int idPlayer);
+
         public bool DeleteGame(int id);
 
         public PlayerDTO UpdatePlayer(int playerId, string name);
         public bool DeletePlayer(int playerId);
         public PlayerDTO CreatePlayer(string name);
+
+        public GameDTO GetGame(int id);
+
+        public GameDTO CreateGame();
+
+        public bool PutShip(int gameID, int numPlayer,  int numShip, int line, int column, Orientation orientation);
+        public bool Target(int gameID, int numPlayer, int line, int column);
+
 
     }
 }

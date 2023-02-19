@@ -13,7 +13,7 @@
 
         private HashSet<(int, int)> _listTarget = new HashSet<(int, int)>();
 
-        public PlayerDTO AssociatedPlayer { get; set; }
+        public PlayerDTO? AssociatedPlayer { get; set; }
 
         public MapDTO(int lineMax, int columnMax)
         {
@@ -44,9 +44,11 @@
             Ship value = _associatedShips[numShip];
             var (dep_x, dep_y) = (orientation == Orientation.HORIZONTAL) ? (0, 1) : (1, 0);
 
-
-            if (line + dep_x * value.Length >= LineMax || column + dep_y * value.Length >= ColumMax)
+            // Check index
+            if ( (line + dep_x * (value.Length-1)) >= LineMax || (column + dep_y * (value.Length-1)) >= ColumMax)
                 throw new ArgumentException();
+
+            // Check free case 
             for (int i = 0; i < value.Length; i++)
             {
                 if (Body[line + dep_x * i][column + dep_y * i] != -1 && Body[line + dep_x * i][column + dep_y * i] != numShip)
@@ -55,9 +57,12 @@
                 }
             }
 
+
             (dep_x, dep_y) = (value.Orientation == Orientation.HORIZONTAL) ? (0, 1) : (1, 0);
+            // Already placed ?
             if (value.position != (-1, -1))
             {
+                // We erase the ship from the map
                 for (int i = 0; i < value.Length; i++)
                 {
                     Body[value.position.Item1 + dep_x * i][value.position.Item2 + dep_y * i] = -1;

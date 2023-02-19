@@ -14,5 +14,10 @@ namespace NavalWar.DAL.Repositories
         public MapDTO CreateMap(int line, int column, int idInGame, int idPlayer);
         public GameDTO CreateGame();
         public bool DeleteGame(int id);
+        public GameDTO GetGame(int id);
+        public bool PutShip(int gameID, int numPlayer, int numShip, int line, int column, Orientation orientation);
+        public bool Target(int gameID, int numPlayer, int line, int column);
+
+
     }
 }
