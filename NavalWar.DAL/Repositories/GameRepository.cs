@@ -72,6 +72,12 @@ namespace NavalWar.DAL.Repositories
             Map m0 = _context.Maps.FirstOrDefault(m => m.IdMap == g.idMap0);
             Map m1 = _context.Maps.FirstOrDefault(m => m.IdMap == g.idMap1);
 
+            Player p0 = _context.Players.FirstOrDefault(p => m0.idPlayer == id);
+            Player p1 = _context.Players.FirstOrDefault(p => m1.idPlayer == id);
+
+            m0._associatedPlayer = p0;
+            m1._associatedPlayer = p1;
+
             g.Map0 = m0;
             g.Map1 = m1;
             
@@ -168,6 +174,47 @@ namespace NavalWar.DAL.Repositories
             {
                 return false;
             }
+
+            return true;
+        }
+
+
+        public bool AssociatePlayer(int gameID, int playerID, int id_secret_player)
+        {
+            // Security : check if already has one ?
+            Game g = _context.Games.FirstOrDefault(game => game.IdGame == gameID);
+
+            if (g == null) return false;
+
+            Player p = _context.Players.FirstOrDefault(p => p.Id == id_secret_player);
+
+            Map m;
+            if (playerID == 0)
+            {
+                m = _context.Maps.FirstOrDefault(m => m.IdMap == g.idMap0);
+            }
+            else
+            {
+                m = _context.Maps.FirstOrDefault(m => m.IdMap == g.idMap1);
+            }
+
+            if(p ==null || m == null) return false;
+
+            m._associatedPlayer= p;
+            m.idPlayer = p.Id;
+            _context.SaveChanges();
+
+            if (playerID == 0)
+            {
+               g.Map0 = m;
+            }
+            else
+            {
+                g.Map1 = m;
+            }
+            _context.SaveChanges();
+
+            Console.WriteLine("map:" + m.idPlayer + " player:" + p.Id + " Game: " + g.Map0.idPlayer);
 
             return true;
         }

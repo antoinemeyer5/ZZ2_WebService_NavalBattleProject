@@ -37,11 +37,13 @@ namespace NavalWar.DAL
                 .HasForeignKey(g => g.idMap0)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            /*modelBuilder.Entity<Map>()
-               .HasOne(m => m._associatedPlayer)
-               .WithMany()
-               .HasForeignKey(m => m.idPlayer)
-               .OnDelete(DeleteBehavior.NoAction);*/
+
+            modelBuilder.Entity<Map>()
+                .HasOne(m => m._associatedPlayer)
+                .WithMany()
+                .HasForeignKey(m => m.idPlayer)
+                .OnDelete(DeleteBehavior.NoAction);
+
         }
 
 

@@ -23,8 +23,8 @@ namespace NavalWar.DAL.Models
         [StringLength(1000)]
         public string ListTarget {get;set;} = string.Empty;
 
-        public Player? _associatedPlayer { get; set; }
-        public int? idPlayer { get; set; }
+        public Player? _associatedPlayer { get; set; } = null;
+        public int? idPlayer { get; set; } = null;
 
     }
 

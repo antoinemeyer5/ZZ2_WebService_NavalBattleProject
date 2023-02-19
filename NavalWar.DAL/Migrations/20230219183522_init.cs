@@ -34,15 +34,14 @@ namespace NavalWar.DAL.Migrations
                     Line = table.Column<int>(type: "int", nullable: false),
                     Body = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ListTarget = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
-                    associatedPlayerId = table.Column<int>(name: "_associatedPlayerId", type: "int", nullable: true),
                     idPlayer = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Map", x => x.IdMap);
                     table.ForeignKey(
-                        name: "FK_Map_Player__associatedPlayerId",
-                        column: x => x.associatedPlayerId,
+                        name: "FK_Map_Player_idPlayer",
+                        column: x => x.idPlayer,
                         principalTable: "Player",
                         principalColumn: "Id");
                 });
@@ -85,9 +84,9 @@ namespace NavalWar.DAL.Migrations
                 column: "idMap1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Map__associatedPlayerId",
+                name: "IX_Map_idPlayer",
                 table: "Map",
-                column: "_associatedPlayerId");
+                column: "idPlayer");
         }
 
         /// <inheritdoc />
