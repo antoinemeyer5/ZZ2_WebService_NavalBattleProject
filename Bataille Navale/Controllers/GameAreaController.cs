@@ -142,6 +142,18 @@ namespace Bataille_Navale.Controllers
             return StatusCode(400);
         }
 
+
+        // GET api/GameArea/Players
+        [HttpGet("Players/{id}")]
+        public IActionResult GetPlayer(int id) 
+        {
+            PlayerDTO p = _gameService.GetPlayer(id);
+            if (p == null)
+                return StatusCode(400);
+
+            return Ok(p);
+        }
+
         // Delete api/GameArea/Players/{playerId}
         [HttpDelete("Players/{playerId}")]
         public IActionResult DeletePlayer(int playerId)
@@ -164,6 +176,17 @@ namespace Bataille_Navale.Controllers
         }
 
         // Manque associer player à MAP
+        // Post api/GameArea/Games/{gameID}/associate/Players/{playerID}
+        [HttpPost("Games/{gameID}/associate/Players/{playerID}")]
+        public IActionResult AssociatePlayer(int gameID, int playerID, [FromForm] int id_secret_player )
+        {
+            if(playerID != 0 && playerID != 1)
+                return StatusCode(400);
+
+            if(!_gameService.AssociatePlayer(gameID, playerID, id_secret_player))
+                return StatusCode(400);
+            return Ok();
+        }
 
 
 
