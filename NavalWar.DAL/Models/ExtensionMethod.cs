@@ -61,6 +61,12 @@ namespace ExtensionMethod
                     m.Body.Add(l);
                 }
             }
+
+
+            if (map.idPlayer != null && map._associatedPlayer != null)
+            {
+                m.AssociatedPlayer = map._associatedPlayer.toDTO();
+            }
             return m;
         }
 

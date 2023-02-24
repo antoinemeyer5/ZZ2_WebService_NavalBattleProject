@@ -80,15 +80,12 @@ namespace NavalWar.DAL.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<int?>("_associatedPlayerId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("idPlayer")
                         .HasColumnType("int");
 
                     b.HasKey("IdMap");
 
-                    b.HasIndex("_associatedPlayerId");
+                    b.HasIndex("idPlayer");
 
                     b.ToTable("Map", (string)null);
                 });
@@ -133,7 +130,8 @@ namespace NavalWar.DAL.Migrations
                 {
                     b.HasOne("NavalWar.DAL.Models.Player", "_associatedPlayer")
                         .WithMany()
-                        .HasForeignKey("_associatedPlayerId");
+                        .HasForeignKey("idPlayer")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("_associatedPlayer");
                 });

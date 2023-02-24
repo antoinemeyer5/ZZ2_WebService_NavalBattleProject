@@ -1,4 +1,5 @@
-﻿using NavalWar.DAL.Repositories;
+﻿using NavalWar.DAL.Models;
+using NavalWar.DAL.Repositories;
 using NavalWar.DTO;
 
 namespace NavalWar.Business
@@ -98,6 +99,11 @@ namespace NavalWar.Business
             return _playerRepository.CreatePlayer(name);
         }
 
+        public PlayerDTO GetPlayer(int id)
+        {
+            return _playerRepository.GetPlayer(id);
+        }
+
         public GameDTO GetGame(int id)
         {
             try
@@ -126,6 +132,10 @@ namespace NavalWar.Business
             return _gameRepository.Target(gameID, numPlayer, line, column);
         }
 
+        public bool AssociatePlayer(int gameID, int playerID, int id_secret_player)
+        {
+            return _gameRepository.AssociatePlayer(gameID, playerID, id_secret_player);
+        }
 
 
     }
