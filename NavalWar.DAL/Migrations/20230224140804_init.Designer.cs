@@ -12,7 +12,7 @@ using NavalWar.DAL;
 namespace NavalWar.DAL.Migrations
 {
     [DbContext(typeof(NavalContext))]
-    [Migration("20230219183522_init")]
+    [Migration("20230224140804_init")]
     partial class init
     {
         /// <inheritdoc />

@@ -214,7 +214,7 @@ namespace NavalWar.DAL.Repositories
             }
             _context.SaveChanges();
 
-            Console.WriteLine("map:" + m.idPlayer + " player:" + p.Id + " Game: " + g.Map0.idPlayer);
+
 
             return true;
         }
