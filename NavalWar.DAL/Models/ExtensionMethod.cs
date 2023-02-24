@@ -32,7 +32,7 @@ namespace ExtensionMethod
             g.WinnerId = game.WinnerId;
             g.Duration = game.Duration;
             g.Result = game.Result;
-            g.ListMap[0] = game.Map0 is null ? null :game.Map0.toDTO();
+            g.ListMap[0] = game.Map0 is null ? null : game.Map0.toDTO();
             g.ListMap[1] = game.Map1 is null ? null : game.Map1.toDTO();
 
             return g;
@@ -63,10 +63,16 @@ namespace ExtensionMethod
             }
 
 
-            if (map.idPlayer != null && map._associatedPlayer != null)
+            if (map._associatedPlayer != null)
             {
                 m.AssociatedPlayer = map._associatedPlayer.toDTO();
             }
+            else
+            {
+                if (map.idPlayer != null)
+                    Console.WriteLine("J'ai un probleme car associa OK ????" + map.idPlayer);
+            }
+
             return m;
         }
 

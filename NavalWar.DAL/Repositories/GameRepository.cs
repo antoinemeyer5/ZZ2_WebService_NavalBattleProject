@@ -21,9 +21,9 @@ namespace NavalWar.DAL.Repositories
             _context = context;
         }
 
-        public MapDTO CreateMap(int line, int column, int idInGame, int idPlayer)
+        public Map CreateMap(int line, int column)
         {
-            Map m = new Map() { Line = line, Column = column, IdInGame = idInGame, _associatedPlayer = _context.Players.First(x => x.Id == idPlayer) };
+            Map m = new Map() { Line = line, Column = column};
             List<List<int>> tempBody = new List<List<int>>();
 
             for (int i = 0; i < line; i++)
@@ -39,25 +39,27 @@ namespace NavalWar.DAL.Repositories
             _context.Maps.Add(m);
             _context.SaveChanges();
 
-
-            return m.toDTO();
+            return m;
         }
 
         public GameDTO CreateGame()
         {
             Game g = new Game() { Result = -1, WinnerId = -1, Duration = 0 };
+            
 
-            Map m1 = new Map();
-            Map m2 = new Map();
-
-            _context.Maps.Add(m1);
-            _context.Maps.Add(m2);
-            _context.SaveChanges();
+            Map m1 = CreateMap(10, 10);
+            Map m2 = CreateMap(10, 10);
 
             g.Map0= m1;
             g.Map1= m2;
+            g.idMap0 = m1.IdMap;
+            g.idMap1 = m2.IdMap;
+
             _context.Games.Add(g);
             _context.SaveChanges();
+
+            Console.WriteLine("idmap: " + g.idMap0 +  " " + g.idMap1);
+
 
             return g.toDTO();
         }
@@ -72,11 +74,17 @@ namespace NavalWar.DAL.Repositories
             Map m0 = _context.Maps.FirstOrDefault(m => m.IdMap == g.idMap0);
             Map m1 = _context.Maps.FirstOrDefault(m => m.IdMap == g.idMap1);
 
-            Player p0 = _context.Players.FirstOrDefault(p => m0.idPlayer == id);
-            Player p1 = _context.Players.FirstOrDefault(p => m1.idPlayer == id);
+            if (m0.idPlayer != null)
+            {
+                Player p0 = _context.Players.Find(m0.idPlayer);
+                m0._associatedPlayer = p0;
+            }
 
-            m0._associatedPlayer = p0;
-            m1._associatedPlayer = p1;
+            if (m1.idPlayer != null)
+            {
+                Player p1 = _context.Players.Find(m1.idPlayer);
+                m1._associatedPlayer = p1;
+            }
 
             g.Map0 = m0;
             g.Map1 = m1;
@@ -202,19 +210,21 @@ namespace NavalWar.DAL.Repositories
 
             m._associatedPlayer= p;
             m.idPlayer = p.Id;
-            _context.SaveChanges();
 
             if (playerID == 0)
             {
                g.Map0 = m;
+                Console.WriteLine("Je mets dans la map 0 :" + m.idPlayer + " - " + p.Id + " - " + g.Map0.idPlayer);
             }
             else
             {
                 g.Map1 = m;
+                Console.WriteLine("Je mets dans la map 1 :" + m.idPlayer + " - " + p.Id + " - " + g.Map1.idPlayer);
             }
             _context.SaveChanges();
+            Console.WriteLine("J'enregistre");
 
-            Console.WriteLine("map:" + m.idPlayer + " player:" + p.Id + " Game: " + g.Map0.idPlayer);
+            
 
             return true;
         }

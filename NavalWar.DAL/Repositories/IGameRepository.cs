@@ -11,7 +11,7 @@ namespace NavalWar.DAL.Repositories
 {
     public interface IGameRepository
     {
-        public MapDTO CreateMap(int line, int column, int idInGame, int idPlayer);
+        public Map CreateMap(int line, int column);
         public GameDTO CreateGame();
         public bool DeleteGame(int id);
         public GameDTO GetGame(int id);

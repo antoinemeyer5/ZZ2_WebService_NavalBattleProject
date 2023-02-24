@@ -4,9 +4,9 @@ namespace NavalWar.Business
     public interface IGameService
     {
         public MapDTO[] ListMap { get; set; }
-        public void HostGame(PlayerDTO p);
+     /*   public void HostGame(PlayerDTO p);
 
-        public void JoinGame(PlayerDTO p);
+        public void JoinGame(PlayerDTO p);*/
 
         public int GetId();
 
@@ -26,7 +26,7 @@ namespace NavalWar.Business
 
         public GameDTO CreateGame();
 
-        public bool PutShip(int gameID, int numPlayer,  int numShip, int line, int column, Orientation orientation);
+        public bool PutShip(int gameID, int numPlayer, int numShip, int line, int column, Orientation orientation);
         public bool Target(int gameID, int numPlayer, int line, int column);
 
         public bool AssociatePlayer(int gameID, int playerID, int id_secret_player);
