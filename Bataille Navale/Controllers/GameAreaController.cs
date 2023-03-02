@@ -5,12 +5,15 @@ using NavalWar.DAL.Repositories;
 using System.Text.Json.Serialization;
 using System.Net.Http.Json;
 using System.Text.Json;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Bataille_Navale.Controllers
 {
 
+    [EnableCors("CorsPolicy")]
     [Route("api/[controller]")]
     [ApiController]
     public class GameAreaController : ControllerBase

@@ -3,18 +3,17 @@ using NavalWar.Business;
 using NavalWar.DAL;
 using NavalWar.DAL.Repositories;
 
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
 var builder = WebApplication.CreateBuilder(args);
 
 // allow localhost:4200
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: MyAllowSpecificOrigins,
-                      policy =>
-                      {
-                          policy.WithOrigins("http://localhost:4200/game");
-                      });
+    options.AddPolicy(
+     "CorsPolicy",
+     builder => builder.WithOrigins("http://localhost:4200")
+     .AllowAnyMethod()
+     .AllowAnyHeader()
+     .AllowCredentials());
 });
 
 // Add services to the container.
@@ -35,6 +34,8 @@ builder.Services.AddScoped<IGameRepository, GameRepository>();
 
 var app = builder.Build();
 
+app.UseCors("CorsPolicy");
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -43,8 +44,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-app.UseCors(MyAllowSpecificOrigins);
 
 app.UseAuthorization();
 
