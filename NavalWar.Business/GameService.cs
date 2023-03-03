@@ -37,7 +37,7 @@ namespace NavalWar.Business
             _playerRepository = playerRepository;
         }
 
-        public void HostGame(PlayerDTO p)
+       /* public void HostGame(PlayerDTO p)
         {
             _game = _gameRepository.CreateGame();
             _game.ListMap[0] = _gameRepository.CreateMap(10, 10, _game.IdGame, p.Id);
@@ -45,7 +45,7 @@ namespace NavalWar.Business
         public void JoinGame(PlayerDTO p)
         {
             _game.ListMap[1] = _gameRepository.CreateMap(10, 10, _game.IdGame, p.Id);
-        }
+        }*/
 
         public List<List<int>> GetMap(int idPlayer)
         {
