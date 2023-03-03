@@ -222,10 +222,7 @@ namespace NavalWar.DAL.Repositories
                 Console.WriteLine("Je mets dans la map 1 :" + m.idPlayer + " - " + p.Id + " - " + g.Map1.idPlayer);
             }
             _context.SaveChanges();
-            Console.WriteLine("J'enregistre");
-
-            
-
+ 
             return true;
         }
 
