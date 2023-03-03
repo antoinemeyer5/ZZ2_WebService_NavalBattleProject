@@ -65,14 +65,14 @@ namespace Bataille_Navale.Controllers
             {
                 return StatusCode(400);
             }
-            for (int i = 0; i < g.ListMap[0].LineMax; i++)
+/*            for (int i = 0; i < g.ListMap[0].LineMax; i++)
             {
                 for (int j = 0; j < g.ListMap[0].ColumMax; j++)
                 {
                     Console.WriteLine("ee");
                     Console.WriteLine(g.ListMap[0].Body[i][j]);
                 }
-            }
+            }*/
             /*return Ok(JsonSerializer.Serialize(g));*/
             return Ok(g);
 
@@ -115,7 +115,7 @@ namespace Bataille_Navale.Controllers
         {
             bool res = _gameService.Target(gameID, numPlayer, line, column);
             if (res)
-                return Ok();
+                return Ok("ciucou");
 
             return StatusCode(400);
         }

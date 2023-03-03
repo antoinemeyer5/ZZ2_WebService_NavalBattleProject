@@ -14,7 +14,6 @@ namespace NavalWar.DAL.Models
     {
         [Key]
         public int IdMap { get; set; }
-        public int IdInGame { get; set; }
         public int Column { get; set; } = 10;
         public int Line { get; set; } = 10;
 
