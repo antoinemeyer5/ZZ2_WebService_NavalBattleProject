@@ -69,9 +69,6 @@ namespace NavalWar.DAL.Migrations
                     b.Property<int>("Column")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdInGame")
-                        .HasColumnType("int");
-
                     b.Property<int>("Line")
                         .HasColumnType("int");
 
