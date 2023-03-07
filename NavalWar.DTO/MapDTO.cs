@@ -1,24 +1,26 @@
-﻿namespace NavalWar.DTO
+﻿using System.Numerics;
+
+namespace NavalWar.DTO
 {
     public enum Orientation { HORIZONTAL, VERTICAL };
     public class MapDTO
     {
-        private List<Ship> _associatedShips;  //example: [ship1; ship3; ship4]
+       
         private int _lineMax = 10;
         private int _columnMax = 10;
 
         public List<List<int>> Body { get; set; }
         public int ColumMax { get { return _columnMax; } }
         public int LineMax { get { return _lineMax; } }
-
-        private HashSet<(int, int)> _listTarget = new HashSet<(int, int)>();
+        public List<Ship> AssociatedShips { get; set; }
+        public HashSet<Vector2> ListTarget { get; set; }
 
         public PlayerDTO? AssociatedPlayer { get; set; }
 
         public MapDTO(int lineMax, int columnMax)
         {
 
-            _associatedShips = new List<Ship>
+            AssociatedShips = new List<Ship>
             {
                  new Carrier((-1,-1),Orientation.HORIZONTAL),
                  new Battleship((-1,-1),Orientation.HORIZONTAL),
@@ -41,7 +43,7 @@
 
         public void PlaceShip(int numShip, int line, int column, Orientation orientation)
         {
-            Ship value = _associatedShips[numShip];
+            Ship value = AssociatedShips[numShip];
             var (dep_x, dep_y) = (orientation == Orientation.HORIZONTAL) ? (0, 1) : (1, 0);
 
             // Check index
@@ -79,35 +81,35 @@
             }
         }
 
-        public string Target(int line, int column, MapDTO target)
+        public int Target(int line, int column, MapDTO target)
         {
-            if (_listTarget.Contains((line, column)) || line >= LineMax || column >= ColumMax)
+            if (ListTarget.Contains(new Vector2(line, column)) || line >= LineMax || column >= ColumMax)
             {
                 Console.WriteLine("already targeted or out of map");
                 throw new ArgumentException();
             }
-            _listTarget.Add((line, column));
+            ListTarget.Add(new Vector2{ X=line,Y=column});
             return target.ReceiveTarget(line, column);
         }
 
-        public string ReceiveTarget(int line, int column)
+        public int ReceiveTarget(int line, int column)
         {
-            string result;
+            int result;
             if (Body[line][column] >= 0)
             {
-                Ship ship = _associatedShips[Body[line][column]];
+                Ship ship = AssociatedShips[Body[line][column]];
 
-                ship.Pv--;
-                if (ship.Pv == 0)
-                    result = "Coulé!";
-                else
-                    result = "Touché !";
+                //ship.Pv--;
+                //if (ship.Pv == 0)
+                    result = 2;
+                //else
+                //    result = 1;
 
                 Body[line][column] = -2;
             }
             else
             {
-                result = "A l'eau";
+                result = 0;
                 Body[line][column] = -3;
             }
             return result;

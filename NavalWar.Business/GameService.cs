@@ -1,73 +1,45 @@
-﻿using NavalWar.DAL.Models;
+﻿using Microsoft.EntityFrameworkCore.Query;
+using NavalWar.DAL.Models;
 using NavalWar.DAL.Repositories;
 using NavalWar.DTO;
+using System.Numerics;
 
 namespace NavalWar.Business
 {
     // For void commit
     public class GameService : IGameService
     {
-        private GameDTO _game;
         private IGameRepository _gameRepository;
-        private IPlayerRepository _playerRepository; //Maybe should we moove it into GameService --> OFC jalil you're just stupid
-
-        public MapDTO[] ListMap { get { return _game.ListMap; } set { _game.ListMap = value; } }
-
-        public GameService(int idGame, MapDTO m0, MapDTO m1)
+        public GameDTO GetGameByID(int id)
         {
-            _game = new GameDTO() { Result = -1, WinnerId = -1, Duration = 0, IdGame = idGame };
-            _game.ListMap[0] = m0;
-            _game.ListMap[1] = m1;
+            return _gameRepository.GetGame(id);
         }
 
-        public GameService(GameDTO g)
+        public GameService(IGameRepository gameRepository)
         {
-            _game = g;
-        }
-
-        public int GetId()
-        {
-            return _game.IdGame;
-        }
-
-        public GameService(IGameRepository gameRepository, IPlayerRepository playerRepository)
-        {
-            _game = null;
             _gameRepository = gameRepository;
-            _playerRepository = playerRepository;
         }
 
-        public void HostGame(PlayerDTO p)
+        public GameDTO HostGame(PlayerDTO p)
         {
-            _game = _gameRepository.CreateGame();
-            _game.ListMap[0] = _gameRepository.CreateMap(10, 10, _game.IdGame, p.Id);
+            GameDTO game = _gameRepository.CreateGame();
+            _gameRepository.CreateMap(10, 10, game.IdGame, 0, p.Id);
+            return GetGameByID(game.IdGame);
         }
-        public void JoinGame(PlayerDTO p)
+        public void JoinGame(PlayerDTO p, int id)
         {
-            _game.ListMap[1] = _gameRepository.CreateMap(10, 10, _game.IdGame, p.Id);
-        }
-
-        public List<List<int>> GetMap(int idPlayer)
-        {
-            return _game.ListMap[idPlayer].Body;
+            GameDTO game = GetGameByID(id);
+            _gameRepository.CreateMap(10, 10, game.IdGame, 1, p.Id);
         }
 
-
-        public List<List<int>> GetMap(int gameID, int idPlayer)
+        public List<List<int>> GetMap(int idGame, int idPlayer)
         {
-            GameDTO g = GetGame(gameID);
-            List<List<int>> L = null;
-            if (g != null)
-            {
-                L = g.ListMap[idPlayer].Body;
-            }
-
-            return L;
+            return GetGameByID(idGame).ListMap[idPlayer].Body;
         }
 
         public MapDTO GetMapDTO(int gameID, int idPlayer)
         {
-            GameDTO g = GetGame(gameID);
+            GameDTO g = GetGameByID(gameID);
             MapDTO m = null;
             if (g != null)
             {
@@ -76,68 +48,19 @@ namespace NavalWar.Business
 
             return m;
         }
-
         public bool DeleteGame(int id)
         {
             return _gameRepository.DeleteGame(id);
         }
-
-
-        public PlayerDTO UpdatePlayer(int playerId, string name)
-        {
-            return _playerRepository.UpdatePlayer(playerId, name);
-        }
-
-        public bool DeletePlayer(int playerId)
-        {
-            return _playerRepository.DeletePlayer(playerId);
-        }
-
-
-        public PlayerDTO CreatePlayer(string name)
-        {
-            return _playerRepository.CreatePlayer(name);
-        }
-
-        public PlayerDTO GetPlayer(int id)
-        {
-            return _playerRepository.GetPlayer(id);
-        }
-
-        public GameDTO GetGame(int id)
-        {
-            try
-            {
-                return _gameRepository.GetGame(id);
-            }catch(Exception e) {
-                throw;
-            }
-            
-        }
-
-
-        public GameDTO CreateGame()
-        {
-            return _gameRepository.CreateGame(); 
-        }
-
-
         public bool PutShip(int gameID, int numPlayer, int numShip, int line, int column, Orientation orientation)
         {
             return _gameRepository.PutShip(gameID, numPlayer, numShip, line, column, orientation);
         }
 
-        public bool Target(int gameID, int numPlayer, int line, int column)
+        public int Target(int gameID, int numPlayer, int line, int column)
         {
             return _gameRepository.Target(gameID, numPlayer, line, column);
         }
 
-        public bool AssociatePlayer(int gameID, int playerID, int id_secret_player)
-        {
-            return _gameRepository.AssociatePlayer(gameID, playerID, id_secret_player);
-        }
-
-
     }
-
 }

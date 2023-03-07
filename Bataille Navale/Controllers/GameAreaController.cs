@@ -12,16 +12,17 @@ using Microsoft.AspNetCore.Cors.Infrastructure;
 
 namespace Bataille_Navale.Controllers
 {
-
     [EnableCors("CorsPolicy")]
     [Route("api/[controller]")]
     [ApiController]
     public class GameAreaController : ControllerBase
     {
         private readonly IGameService _gameService;
-        public GameAreaController(IGameService gameService)
+        private readonly IPlayerService _playerService;
+        public GameAreaController(IGameService gameService, IPlayerService playerService)
         {
             _gameService = gameService;
+            _playerService = playerService;
         }
 
         [HttpGet("Games/{id}")]
@@ -30,7 +31,7 @@ namespace Bataille_Navale.Controllers
         {
             try
             {
-                GameDTO g = _gameService.GetGame(id);
+                GameDTO g = _gameService.GetGameByID(id);
                 return Ok(g);
             }
             catch(Exception)
@@ -49,7 +50,7 @@ namespace Bataille_Navale.Controllers
 
             try
             {
-                GameDTO g = _gameService.GetGame(gameID);
+                GameDTO g = _gameService.GetGameByID(gameID);
                 return Ok(g.ListMap[numPlayer]);    
             }
             catch(Exception)
@@ -58,28 +59,35 @@ namespace Bataille_Navale.Controllers
             }
         }
 
-        [HttpPut("Games")]
-        // PUT api/GameArea/Games
-        public IActionResult NewGame()
+        [HttpPut("JoinGame")]
+        // PUT api/GameArea/JoinGame
+        public IActionResult JoinGame([FromForm] int idGame, [FromForm] int idPlayer)
         {
-            GameDTO g = _gameService.CreateGame();
+            try
+            {
+                _gameService.JoinGame(_playerService.GetPlayer(idPlayer), idGame);
+                return Ok(_gameService.GetGameByID(idGame));
+            }
+            catch(Exception) {
+                return StatusCode(400);
+            }
+        }
 
-            if (g == null)
+        [HttpPut("HostGame")]
+        // PUT api/GameArea/HostGame
+        public IActionResult HostGame([FromForm] int idPlayer)
+        {
+            try
+            {
+                GameDTO g = _gameService.HostGame(_playerService.GetPlayer(idPlayer));
+                return Ok(g);
+            }
+            catch (Exception)
             {
                 return StatusCode(400);
             }
-            for (int i = 0; i < g.ListMap[0].LineMax; i++)
-            {
-                for (int j = 0; j < g.ListMap[0].ColumMax; j++)
-                {
-                    Console.WriteLine("ee");
-                    Console.WriteLine(g.ListMap[0].Body[i][j]);
-                }
-            }
-            /*return Ok(JsonSerializer.Serialize(g));*/
-            return Ok(g);
-
         }
+
 
 
         // PUT api/GameArea/Games/{gameID}/Putship/numPlayer
@@ -89,7 +97,7 @@ namespace Bataille_Navale.Controllers
             if(numPlayer< 0 || numPlayer > 1)
                 return StatusCode(400);
 
-            GameDTO g = _gameService.GetGame(gameID);
+            GameDTO g = _gameService.GetGameByID(gameID);
             if (g == null)
                 return StatusCode(400);
 
@@ -116,11 +124,17 @@ namespace Bataille_Navale.Controllers
         // PUT api/GameArea/Games/{gameID}/Target/numPlayer
         public IActionResult PutTarget(int gameID, int numPlayer, [FromForm] int line, [FromForm] int column)
         {
-            bool res = _gameService.Target(gameID, numPlayer, line, column);
-            if (res)
-                return Ok();
-
-            return StatusCode(400);
+            int res;
+            try
+            {
+                res = _gameService.Target(gameID, numPlayer, line, column);
+                return Ok(res);
+            }
+            catch(ArgumentException) { return StatusCode(400);}
+            catch(Exception)
+            {
+                return StatusCode(500);
+            }
         }
 
         // DELETE api/GameArea/Games/{id}
@@ -131,67 +145,5 @@ namespace Bataille_Navale.Controllers
                 return Ok();
             return StatusCode(400);
         }
-
-        // PUT api/GameArea/CreatePlayer
-        [HttpPut("CreatePlayer")]
-        public IActionResult CreatePlayer([FromForm] string name)
-        {
-            PlayerDTO p = _gameService.CreatePlayer(name);
-            if (p != null)
-            {
-                return Ok(p);
-            }
-
-            return StatusCode(400);
-        }
-
-
-        // GET api/GameArea/Players
-        [HttpGet("Players/{id}")]
-        public IActionResult GetPlayer(int id) 
-        {
-            PlayerDTO p = _gameService.GetPlayer(id);
-            if (p == null)
-                return StatusCode(400);
-
-            return Ok(p);
-        }
-
-        // Delete api/GameArea/Players/{playerId}
-        [HttpDelete("Players/{playerId}")]
-        public IActionResult DeletePlayer(int playerId)
-        {
-            if (_gameService.DeletePlayer(playerId))
-                return Ok();
-
-            return StatusCode(400); // We should not care ?
-        }
-
-        // Delete api/GameArea/Players/{playerId}
-        [HttpPost("Players/{playerId}")]
-        public IActionResult UpdatePlayer(int playerId, [FromForm] string name)
-        {
-            PlayerDTO p = _gameService.UpdatePlayer(playerId, name);
-            if (p != null)
-                return Ok();
-
-            return StatusCode(400);
-        }
-
-        // Manque associer player à MAP
-        // Post api/GameArea/Games/{gameID}/associate/Players/{playerID}
-        [HttpPost("Games/{gameID}/associate/Players/{playerID}")]
-        public IActionResult AssociatePlayer(int gameID, int playerID, [FromForm] int id_secret_player )
-        {
-            if(playerID != 0 && playerID != 1)
-                return StatusCode(400);
-
-            if(!_gameService.AssociatePlayer(gameID, playerID, id_secret_player))
-                return StatusCode(400);
-            return Ok();
-        }
-
-
-
     }
 }
