@@ -12,7 +12,7 @@ using NavalWar.DAL;
 namespace NavalWar.DAL.Migrations
 {
     [DbContext(typeof(NavalContext))]
-    [Migration("20230307164517_init")]
+    [Migration("20230307170310_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -70,9 +70,6 @@ namespace NavalWar.DAL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Column")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdInGame")
                         .HasColumnType("int");
 
                     b.Property<int>("Line")

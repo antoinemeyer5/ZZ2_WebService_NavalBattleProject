@@ -31,7 +31,7 @@ namespace NavalWar.DAL.Repositories
         {
             Game g = _context.Games.First(game => game.IdGame == idGame);
             Player p = _context.Players.First(p => p.Id == idPlayer);
-            Map m = new Map() { Line = line, Column = column, IdInGame = idInGame, _associatedPlayer = p, idPlayer = p.Id};
+            Map m = new Map() { Line = line, Column = column, _associatedPlayer = p, idPlayer = p.Id};
             List<List<int>> tempBody = new List<List<int>>();
 
             for (int i = 0; i < line; i++)
