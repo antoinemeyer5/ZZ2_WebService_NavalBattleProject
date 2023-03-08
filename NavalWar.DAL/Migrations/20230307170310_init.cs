@@ -29,7 +29,6 @@ namespace NavalWar.DAL.Migrations
                 {
                     IdMap = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IdInGame = table.Column<int>(type: "int", nullable: false),
                     Column = table.Column<int>(type: "int", nullable: false),
                     Line = table.Column<int>(type: "int", nullable: false),
                     Body = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -52,8 +51,8 @@ namespace NavalWar.DAL.Migrations
                 {
                     IdGame = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    idMap0 = table.Column<int>(type: "int", nullable: false),
-                    idMap1 = table.Column<int>(type: "int", nullable: false),
+                    idMap0 = table.Column<int>(type: "int", nullable: true),
+                    idMap1 = table.Column<int>(type: "int", nullable: true),
                     Result = table.Column<int>(type: "int", nullable: false),
                     WinnerId = table.Column<int>(type: "int", nullable: false),
                     Duration = table.Column<float>(type: "real", nullable: false)

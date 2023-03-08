@@ -12,7 +12,7 @@ using NavalWar.DAL;
 namespace NavalWar.DAL.Migrations
 {
     [DbContext(typeof(NavalContext))]
-    [Migration("20230224140804_init")]
+    [Migration("20230307170310_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -42,10 +42,10 @@ namespace NavalWar.DAL.Migrations
                     b.Property<int>("WinnerId")
                         .HasColumnType("int");
 
-                    b.Property<int>("idMap0")
+                    b.Property<int?>("idMap0")
                         .HasColumnType("int");
 
-                    b.Property<int>("idMap1")
+                    b.Property<int?>("idMap1")
                         .HasColumnType("int");
 
                     b.HasKey("IdGame");
@@ -70,9 +70,6 @@ namespace NavalWar.DAL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Column")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdInGame")
                         .HasColumnType("int");
 
                     b.Property<int>("Line")
@@ -115,14 +112,12 @@ namespace NavalWar.DAL.Migrations
                     b.HasOne("NavalWar.DAL.Models.Map", "Map0")
                         .WithMany()
                         .HasForeignKey("idMap0")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("NavalWar.DAL.Models.Map", "Map1")
                         .WithMany()
                         .HasForeignKey("idMap1")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Map0");
 

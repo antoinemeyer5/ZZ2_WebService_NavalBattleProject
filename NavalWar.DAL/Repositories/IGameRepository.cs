@@ -11,15 +11,12 @@ namespace NavalWar.DAL.Repositories
 {
     public interface IGameRepository
     {
-        public Map CreateMap(int line, int column);
+        public MapDTO CreateMap(int line, int column, int idGame, int idInGame, int idPlayer);
         public GameDTO CreateGame();
         public bool DeleteGame(int id);
         public GameDTO GetGame(int id);
         public bool PutShip(int gameID, int numPlayer, int numShip, int line, int column, Orientation orientation);
-        public bool Target(int gameID, int numPlayer, int line, int column);
-
-        public bool AssociatePlayer(int gameID, int playerID, int id_secret_player);
-
-
+        public int Target(int gameID, int numPlayer, int line, int column);
+        public IQueryable<Game> IncludeAll(IQueryable<Game> query);
     }
 }
