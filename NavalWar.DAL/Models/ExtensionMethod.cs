@@ -89,6 +89,7 @@ namespace ExtensionMethod
             g.WinnerId = game.WinnerId;
             g.Duration = game.Duration;
             g.Result = game.Result;
+            g.TourA = game.TourA;
             Console.WriteLine("Game: " + game.Map0?.ToString() + game.Map1?.ToString());
             g.ListMap[0] = game.Map0 == null ? null :game.Map0.toDTO();
             g.ListMap[1] = game.Map1 == null ? null : game.Map1.toDTO();

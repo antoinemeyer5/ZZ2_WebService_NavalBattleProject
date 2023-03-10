@@ -36,6 +36,9 @@ namespace NavalWar.DAL.Migrations
                     b.Property<int>("Result")
                         .HasColumnType("int");
 
+                    b.Property<bool>("TourA")
+                        .HasColumnType("bit");
+
                     b.Property<int>("WinnerId")
                         .HasColumnType("int");
 

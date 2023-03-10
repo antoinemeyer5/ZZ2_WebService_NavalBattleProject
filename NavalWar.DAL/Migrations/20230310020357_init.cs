@@ -55,7 +55,8 @@ namespace NavalWar.DAL.Migrations
                     idMap1 = table.Column<int>(type: "int", nullable: true),
                     Result = table.Column<int>(type: "int", nullable: false),
                     WinnerId = table.Column<int>(type: "int", nullable: false),
-                    Duration = table.Column<float>(type: "real", nullable: false)
+                    Duration = table.Column<float>(type: "real", nullable: false),
+                    TourA = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

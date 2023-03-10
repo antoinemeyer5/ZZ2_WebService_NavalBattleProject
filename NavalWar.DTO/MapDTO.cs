@@ -12,23 +12,19 @@ namespace NavalWar.DTO
         public List<List<int>> Body { get; set; }
         public int ColumMax { get { return _columnMax; } }
         public int LineMax { get { return _lineMax; } }
-        public List<Ship> AssociatedShips { get; set; }
+        public static List<Ship> AssociatedShips { get; set; } = new List<Ship>(){ 
+                 new Carrier((-1,-1),Orientation.HORIZONTAL),
+                 new Battleship((-1,-1),Orientation.HORIZONTAL),
+                 new Destroyer((-1 , -1),Orientation.HORIZONTAL),
+                 new Submarine((-1 , -1),Orientation.HORIZONTAL),
+                 new PatrolBoat((-1 , -1),Orientation.HORIZONTAL) };
+
         public HashSet<Vector2> ListTarget { get; set; }
 
         public PlayerDTO? AssociatedPlayer { get; set; }
 
         public MapDTO(int lineMax, int columnMax)
         {
-
-            AssociatedShips = new List<Ship>
-            {
-                 new Carrier((-1,-1),Orientation.HORIZONTAL),
-                 new Battleship((-1,-1),Orientation.HORIZONTAL),
-                 new Destroyer((-1 , -1),Orientation.HORIZONTAL),
-                 new Submarine((-1 , -1),Orientation.HORIZONTAL),
-                 new PatrolBoat((-1 , -1),Orientation.HORIZONTAL)
-            };
-
             _lineMax = lineMax;
             _columnMax = columnMax;
 
