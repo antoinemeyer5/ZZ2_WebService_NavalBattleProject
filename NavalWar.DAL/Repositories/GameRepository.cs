@@ -63,7 +63,7 @@ namespace NavalWar.DAL.Repositories
 
     public GameDTO CreateGame()
         {
-            Game g = new Game() { Result = -1, WinnerId = -1, Duration = 0 };
+            Game g = new Game() { Result = -1, WinnerId = -1, Duration = 0, TourA = true};
             _context.Games.Add(g);
             _context.SaveChanges();
             return g.toDTO();
@@ -126,7 +126,7 @@ namespace NavalWar.DAL.Repositories
 
             try
             {
-                Ship value = mapDTO.AssociatedShips[numShip];
+                Ship value = MapDTO.AssociatedShips[numShip];
                 var (dep_x, dep_y) = (orientation == Orientation.HORIZONTAL) ? (0, 1) : (1, 0);
 
                 // Check index
@@ -202,19 +202,19 @@ namespace NavalWar.DAL.Repositories
                 
                 if (targetDTO.Body[line][column] >= 0)
                 {
-                    Ship ship = targetDTO.AssociatedShips[targetDTO.Body[line][column]];
+                    Ship ship = MapDTO.AssociatedShips[targetDTO.Body[line][column]];
 
                     //ship.Pv--;
                     //if (ship.Pv == 0)
                     //result = 2;
                     //else
-                        result = 1;
+                        result = -2;
 
                     targetDTO.Body[line][column] = -2;
                 }
                 else
                 {
-                    result = 0;
+                    result = -3;
                     targetDTO.Body[line][column] = -3;
                 }
                 target.Body = JsonSerializer.Serialize(targetDTO.Body);
@@ -223,9 +223,10 @@ namespace NavalWar.DAL.Repositories
                 var options = new JsonSerializerOptions();
                 options.Converters.Add(new VectorConverter());
                 attacker.ListTarget = JsonSerializer.Serialize(attackerDTO.ListTarget, options);
+                g.TourA = !g.TourA;
                 _context.SaveChanges();
 
-                Console.WriteLine(attacker.ListTarget);
+               
             }
             catch (Exception)
             {

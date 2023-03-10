@@ -12,7 +12,7 @@ using NavalWar.DAL;
 namespace NavalWar.DAL.Migrations
 {
     [DbContext(typeof(NavalContext))]
-    [Migration("20230307170310_init")]
+    [Migration("20230310020357_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -38,6 +38,9 @@ namespace NavalWar.DAL.Migrations
 
                     b.Property<int>("Result")
                         .HasColumnType("int");
+
+                    b.Property<bool>("TourA")
+                        .HasColumnType("bit");
 
                     b.Property<int>("WinnerId")
                         .HasColumnType("int");

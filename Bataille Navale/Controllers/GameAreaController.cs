@@ -59,6 +59,14 @@ namespace Bataille_Navale.Controllers
             }
         }
 
+        [HttpGet("Games/AssociatedShip")]
+        // GET api/GameArea/AssociatedShip
+        public IActionResult GetAssociatedShip()
+        {
+            return Ok(MapDTO.AssociatedShips);
+        }
+
+
         [HttpPut("JoinGame")]
         // PUT api/GameArea/JoinGame
         public IActionResult JoinGame([FromForm] int idGame, [FromForm] int idPlayer)
@@ -95,16 +103,16 @@ namespace Bataille_Navale.Controllers
         public IActionResult PutShip(int gameID, int numPlayer, [FromForm] int numShip, [FromForm] int line, [FromForm] int column, [FromForm] Orientation orientation)
         {
             if(numPlayer< 0 || numPlayer > 1)
-                return StatusCode(400);
+                return StatusCode(403);
 
             GameDTO g = _gameService.GetGameByID(gameID);
             if (g == null)
-                return StatusCode(400);
+                return StatusCode(402);
 
-            int i = (numPlayer==0) ? 1 : 0;
+            int i = (numPlayer==0) ? 0 : 1;
             MapDTO m = g.ListMap[i];
             if (m == null)
-                return StatusCode(400);
+                return StatusCode(401);
             try
             {
                 m.PlaceShip(numShip, line, column, orientation);
@@ -117,7 +125,7 @@ namespace Bataille_Navale.Controllers
                 
             }
 
-            return StatusCode(400);
+            return StatusCode(410);
         }
 
         [HttpPut("Games/{gameID}/Target/{numPlayer}")]

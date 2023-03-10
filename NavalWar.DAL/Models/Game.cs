@@ -15,6 +15,7 @@ namespace NavalWar.DAL.Models
         public int Result { get; set; }
         public int WinnerId { get; set; }
         public float Duration { get; set; }
+        public bool TourA { get; set; }
 
         public virtual Map Map0 { get; set; }
         public virtual Map Map1 { get; set; }
